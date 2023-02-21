@@ -9,6 +9,8 @@ VAR_GLOBAL
 	bRedLight : BOOL; 
 	bEnableWinchValve : BOOL;
 	bEnableCylValve : BOOL; 	
-END_VAR]]></Declaration>
+END_VAR
+
+]]></Declaration>
   </GVL>
 </TcPlcObject>
