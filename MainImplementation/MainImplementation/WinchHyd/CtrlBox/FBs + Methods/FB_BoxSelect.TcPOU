@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_BoxSelect" Id="{22b81207-936c-473c-8ff6-af6fff58cec7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BoxSelect
+VAR_INPUT
+	bVirtualSelect : BOOL; 
+	bRealSelect : BOOL; 
+END_VAR
+VAR_OUTPUT
+	bVirtual : BOOL;
+	bReal : BOOL; 
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bVirtualSelect = TRUE THEN
+	bVirtual := TRUE;
+ELSIF bRealSelect = TRUE THEN
+	bReal := TRUE; 
+END_IF
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Status" Id="{1dcaaf1c-b73c-4a79-9950-42ab896dff75}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Status
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FC_GetStatus" Id="{054d094e-f4c6-4358-914b-9e2eee0286a2}">
+      <Declaration><![CDATA[METHOD FC_GetStatus : INT
+VAR_INPUT
+	bManualMode : BOOL;
+	bAutoMode : BOOL;
+	bStartButton : BOOL;
+	bStopButton : BOOL; 
+	fClock : REAL; 
+END_VAR
+VAR_OUTPUT
+	nSetStatus : INT; 
+	bGreenLight : BOOL;
+	bRedLight : BOOL; 
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bManualMode AND bAutoMode = FALSE THEN
+	nSetStatus := E_StatusSettings.NotReady;
+	
+ELSIF bManualMode OR bAutoMode = TRUE THEN
+	nSetStatus := E_StatusSettings.Ready;
+	
+ELSIF bStartButton = TRUE AND NOT (nSetStatus = 4) THEN
+	nSetStatus := E_StatusSettings.Starting;
+
+ELSIF (bManualMode AND bStartButton = TRUE) OR (bAutoMode AND bStartButton = TRUE AND fClock > 0) THEN
+	bGreenLight := TRUE; 
+	nSetStatus := E_StatusSettings.Running;
+	
+ELSIF (bStopButton = TRUE AND nSetStatus = 4) THEN
+	nSetStatus := E_StatusSettings.Stopping;
+	bRedLight := TRUE;
+	bGreenLight := FALSE; 
+	
+ELSIF (G_Inputs.PressureSensorVals.nSupPressure < 10 OR G_Inputs.PressureSensorVals.nReturnPressure = 0) THEN
+	bRedLight := TRUE;
+	bGreenLight := FALSE;
+	nSetStatus := E_StatusSettings.Fault; // Change Inputs to converted values when done
+	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FC_Joy" Id="{35e96bf6-dbee-4757-9006-9e3e8aa2fb9a}">
+      <Declaration><![CDATA[METHOD FC_Joy : LREAL
+VAR_INPUT
+	nJoyX : INT := G_Inputs.nCylPos;
+	bIsManual : BOOL;
+	stJoyInputScale : ST_JoyInputScale; 
+END_VAR
+
+VAR_OUTPUT
+	fJoyX_Norm : LREAL;
+END_VAR
+
+VAR
+	fRawInput : LREAL;
+	fTempInput : LREAL;
+	fTempOutput : LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fRawInput := INT_TO_REAL(nJoyX);
+
+fTempInput := fRawInput - stJoyInputScale.fNeutralInputVal; 
+
+IF fTempInput > stJoyInputScale.fNeutralDeadband THEN
+	fTempOutput := fTempInput/(stJoyInputScale.fMaxInputVal - stJoyInputScale.fNeutralInputVal); 
+
+ELSIF fTempInput < -stJoyInputScale.fNeutralDeadband THEN
+	fTempOutput := fTempInput/(stJoyInputScale.fNeutralInputVal - stJoyInputScale.fMinInputVal);
+	
+ELSE
+	fTempOutput := 0.0; 
+END_IF
+
+IF NOT(bIsManual) THEN
+	fJoyX_Norm := 0.0;
+ELSE
+	fJoyX_Norm := LIMIT(stJoyInputScale.fMinOutputValue, fTempOutput, stJoyInputScale.fMaxOutputValue); 
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

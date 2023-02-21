@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G_CtrlBoxVariables" Id="{9c875b92-1d54-45b6-b833-b0d5a28dbf3f}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	BoxControlVariables : ST_BoxParams; 
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>
