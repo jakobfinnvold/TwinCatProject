@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="35e96bf6-dbee-4757-9006-9e3e8aa2fb9a">FC_JOY</Type>
+      <From>FC_Joy</From>
+      <To>FC_JoyXNorm</To>
+    </RenamedType>
+  </Renames>
+</Refactors>
