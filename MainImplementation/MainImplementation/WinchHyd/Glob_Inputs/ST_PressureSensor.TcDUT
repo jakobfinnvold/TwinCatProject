@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_PressureSensor" Id="{1ab80761-7d79-43a1-ac4b-37e5821b7a7f}">
+    <Declaration><![CDATA[TYPE ST_PressureSensor :
+STRUCT
+	nSupPressure : INT; 
+	nReturnPressure : INT; 
+	nCylPistonPressure  : INT; 
+	nCylRodPressure : INT; 
+	nWinchInPressureA : INT; 
+	nWinchInPressureA1 : INT; 
+	nWinchOutPressureB : INT;
+	nWinchOutPressureB1 : INT; 
+	nWinchDrainPressure : INT; 
+	nWinchInFlow : INT; 
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
