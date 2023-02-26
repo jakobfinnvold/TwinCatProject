@@ -1,21 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="FB_WinchControl" Id="{afefc06e-bd78-485d-a26b-89efa2ded290}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_WinchControl
-VAR_INPUT
-
-END_VAR
-VAR_OUTPUT
-	
-END_VAR
-VAR
-END_VAR
-]]></Declaration>
-    <Implementation>
-      <ST><![CDATA[]]></ST>
-    </Implementation>
-    <Method Name="MotionGenerator" Id="{2c866856-81da-4d19-b69b-e7449cfd03ed}">
-      <Declaration><![CDATA[METHOD MotionGenerator : REAL
+  <POU Name="Path_signal_gen" Id="{b56310c2-722b-4f24-8715-4addef2d7eab}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Path_signal_gen
 VAR_INPUT
 	x0: LREAL;
 	v_0: LREAL;
@@ -44,9 +30,11 @@ VAR
 	a_tmp_tmp_2: LREAL;
 	x1_tmp: LREAL;
 	x4_tmp: LREAL;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[(* MATLAB Function: '<Root>/Path_signal_gen' *)
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(* MATLAB Function: '<Root>/Path_signal_gen' *)
 (* MATLAB Function 'Path_signal_gen': '<S1>:1' *)
 (* '<S1>:1:3' x_SetPoint = x_ref - x0; *)
 (* '<S1>:1:4' vs = v_ref; *)
@@ -186,8 +174,9 @@ END_IF;
 
 (* Outport: '<Root>/Error' incorporates:
  *  MATLAB Function: '<Root>/Path_signal_gen' *)
-Error := DINT_TO_LREAL(Error_0);]]></ST>
-      </Implementation>
-    </Method>
+Error := DINT_TO_LREAL(Error_0);
+
+]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>

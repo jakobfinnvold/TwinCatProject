@@ -1,52 +1,172 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="FB_WinchControl" Id="{afefc06e-bd78-485d-a26b-89efa2ded290}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_WinchControl
-VAR_INPUT
-
-END_VAR
-VAR_OUTPUT
-	
-END_VAR
-VAR
-END_VAR
-]]></Declaration>
-    <Implementation>
-      <ST><![CDATA[]]></ST>
-    </Implementation>
-    <Method Name="MotionGenerator" Id="{2c866856-81da-4d19-b69b-e7449cfd03ed}">
-      <Declaration><![CDATA[METHOD MotionGenerator : REAL
-VAR_INPUT
-	x0: LREAL;
-	v_0: LREAL;
-	x_ref: LREAL;
-	v_ref: LREAL;
-	t0: LREAL;
-	tRamp: LREAL;
-	tWait: LREAL;
-	t: LREAL;
-END_VAR
-VAR_OUTPUT
-	x: LREAL;
-	v: LREAL;
-	Error: LREAL;
-END_VAR
-VAR
-	Error_0: DINT;
-	tHold: LREAL;
-	x1: LREAL;
-	x4: LREAL;
-	a_tmp: LREAL;
-	a_tmp_tmp: LREAL;
-	a_tmp_0: LREAL;
-	a_tmp_tmp_0: LREAL;
-	a_tmp_tmp_1: LREAL;
-	a_tmp_tmp_2: LREAL;
-	x1_tmp: LREAL;
-	x4_tmp: LREAL;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[(* MATLAB Function: '<Root>/Path_signal_gen' *)
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <!--(*
+ *
+ * File: MotionControl.xml
+ *
+ * IEC 61131-3 Structured Text (ST) code generated for subsystem "MotionControl/Path_signal_gen"
+ *
+ * Model name                      : MotionControl
+ * Model version                   : 1.7
+ * Model creator                   : Jakob
+ * Model last modified by          : Jakob
+ * Model last modified on          : Sun Feb 26 16:35:59 2023
+ * Model sample time               : 0s
+ * Subsystem name                  : MotionControl/Path_signal_gen
+ * Subsystem sample time           : 0.4s
+ * Simulink PLC Coder version      : 3.6 (R2022a) 13-Nov-2021
+ * ST code generated on            : Sun Feb 26 16:45:07 2023
+ *
+ * Target IDE selection            : Beckhoff TwinCAT 3
+ * Test Bench included             : No
+ *
+ *)
+-->
+  <fileHeader companyName="The Mathworks, Inc." companyURL="www.mathworks.com" contentDescription="" creationDateTime="2023-02-26T16:45:07" productName="Simulink PLC Coder" productRelease="(R2022a)" productVersion="3.6"/>
+  <contentHeader name="MotionControl">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="0" y="0"/>
+      </fbd>
+      <ld>
+        <scaling x="0" y="0"/>
+      </ld>
+      <sfc>
+        <scaling x="0" y="0"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="Path_signal_gen" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="x0">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="v_0">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="x_ref">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="v_ref">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="t0">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="tRamp">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="tWait">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="t">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="x">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="v">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="Error">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="Error_0">
+              <type>
+                <DINT/>
+              </type>
+            </variable>
+            <variable name="tHold">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="x1">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="x4">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="a_tmp">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="a_tmp_tmp">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="a_tmp_0">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="a_tmp_tmp_0">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="a_tmp_tmp_1">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="a_tmp_tmp_2">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="x1_tmp">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+            <variable name="x4_tmp">
+              <type>
+                <LREAL/>
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"><![CDATA[
+(* MATLAB Function: '<Root>/Path_signal_gen' *)
 (* MATLAB Function 'Path_signal_gen': '<S1>:1' *)
 (* '<S1>:1:3' x_SetPoint = x_ref - x0; *)
 (* '<S1>:1:4' vs = v_ref; *)
@@ -186,8 +306,15 @@ END_IF;
 
 (* Outport: '<Root>/Error' incorporates:
  *  MATLAB Function: '<Root>/Path_signal_gen' *)
-Error := DINT_TO_LREAL(Error_0);]]></ST>
-      </Implementation>
-    </Method>
-  </POU>
-</TcPlcObject>
+Error := DINT_TO_LREAL(Error_0);
+
+]]></xhtml>
+          </ST>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations/>
+  </instances>
+</project>
