@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="Open0" Id="{c6c8f772-383b-4a42-b371-a7ff5f4a9338}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK Open0
+  <POU Name="VelCtrlOpenLoop" Id="{c6c8f772-383b-4a42-b371-a7ff5f4a9338}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK VelCtrlOpenLoop
 VAR_INPUT
 	vel_refms: LREAL;
 	Enable_Signal: LREAL;

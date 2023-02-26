@@ -30,16 +30,25 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="CtrlBox\JoyStick\FB_ValveOutput.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CtrlBox\JoyStick\FB_WinchControl.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="CtrlBox\JoyStick\ST_JoyInputScale.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CtrlBox\JoyStick\ST_ValveScale.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CtrlBox\MotionControl\VelCtrlOpenLoop.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CtrlBox\MotionControl\PosCtrlClosedLoop.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CtrlBox\MotionControl\FB_ValveOutput.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CtrlBox\MotionControl\FB_WinchControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CtrlBox\MotionControl\Path_signal_gen.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CtrlBox\ST_BoxParams.TcDUT">
@@ -66,6 +75,7 @@
   <ItemGroup>
     <Folder Include="CtrlBox\FBs + Methods" />
     <Folder Include="CtrlBox\JoyStick" />
+    <Folder Include="CtrlBox\MotionControl" />
     <Folder Include="CtrlBox\RealBox" />
     <Folder Include="CtrlBox\VirtualBox" />
     <Folder Include="DUTs" />
@@ -73,6 +83,7 @@
     <Folder Include="Glob_Inputs" />
     <Folder Include="Glob_Outputs" />
     <Folder Include="CtrlBox" />
+    <Folder Include="MotionGenerator" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>
@@ -89,6 +100,11 @@
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CtrlBox\MotionControl\MotionControlMatlab.xml">
+      <SubType>Content</SubType>
+    </Content>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

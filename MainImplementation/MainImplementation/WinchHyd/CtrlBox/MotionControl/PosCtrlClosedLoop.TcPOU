@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="Closed" Id="{d9662527-fc38-4981-ae55-b7dc46b02b9a}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK Closed
+  <POU Name="PosCtrlClosedLoop" Id="{d9662527-fc38-4981-ae55-b7dc46b02b9a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PosCtrlClosedLoop
 VAR_INPUT
 	Enable: LREAL;
 	KpGain: LREAL;
