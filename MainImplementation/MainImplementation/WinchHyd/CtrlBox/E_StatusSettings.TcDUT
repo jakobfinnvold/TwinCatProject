@@ -5,7 +5,12 @@
 {attribute 'strict'}
 TYPE E_StatusSettings :
 (
-	enum_member := 0
+	NotReady := 0,
+	Ready := 1,
+	Starting := 2,
+	Running := 3,
+	Stopping := 4,
+	Fault := 5
 );
 END_TYPE
 ]]></Declaration>

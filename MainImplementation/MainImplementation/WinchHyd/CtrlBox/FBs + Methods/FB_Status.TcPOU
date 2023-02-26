@@ -54,8 +54,8 @@ ELSIF (G_Inputs.PressureSensorVals.nSupPressure < 10 OR G_Inputs.PressureSensorV
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="FC_Joy" Id="{35e96bf6-dbee-4757-9006-9e3e8aa2fb9a}">
-      <Declaration><![CDATA[METHOD FC_Joy : LREAL
+    <Method Name="FC_JoyXNorm" Id="{35e96bf6-dbee-4757-9006-9e3e8aa2fb9a}">
+      <Declaration><![CDATA[METHOD FC_JoyXNorm : LREAL
 VAR_INPUT
 	nJoyX : INT := G_Inputs.nCylPos;
 	bIsManual : BOOL;

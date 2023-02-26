@@ -3,8 +3,8 @@
   <POU Name="FB_BoxSelect" Id="{22b81207-936c-473c-8ff6-af6fff58cec7}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_BoxSelect
 VAR_INPUT
-	bVirtualSelect : BOOL; 
-	bRealSelect : BOOL; 
+	bManual : BOOL := ST_BoxParams.Manual;
+	bAuto : BOOL := ST_BoxParams.Auto; 
 END_VAR
 VAR_OUTPUT
 	bVirtual : BOOL;
@@ -14,9 +14,9 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF bVirtualSelect = TRUE THEN
+      <ST><![CDATA[IF bAuto = TRUE THEN
 	bVirtual := TRUE;
-ELSIF bRealSelect = TRUE THEN
+ELSIF bManual = TRUE THEN
 	bReal := TRUE; 
 END_IF
 

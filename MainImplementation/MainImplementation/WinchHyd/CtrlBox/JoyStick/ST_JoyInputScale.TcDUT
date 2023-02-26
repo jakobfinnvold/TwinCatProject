@@ -3,6 +3,13 @@
   <DUT Name="ST_JoyInputScale" Id="{e372a422-4509-4180-bfb6-a05802230ee0}">
     <Declaration><![CDATA[TYPE ST_JoyInputScale :
 STRUCT
+	fMaxInputVal : REAL := 20509.0;
+	fMinInputVal : REAL := 11787.0;
+	fNeutralInputVal : REAL := 16175; 
+	fNeutralDeadband : REAL := 50.0;
+	fMaxOutputValue : REAL := 1.0;
+	fMinOutputValue : REAL := -1.0;
+	fNeutralOutputValue : REAL := 0.0;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

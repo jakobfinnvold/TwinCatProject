@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_WinchControl" Id="{afefc06e-bd78-485d-a26b-89efa2ded290}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_WinchControl
+VAR_INPUT
+
+END_VAR
+VAR_OUTPUT
+	
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="MotionGenerator" Id="{2c866856-81da-4d19-b69b-e7449cfd03ed}">
+      <Declaration><![CDATA[METHOD MotionGenerator : REAL
+VAR_INPUT
+	fPosRef : REAL;
+	fPosInit : REAL;
+	fVelRef : REAL;
+	fVelInit : REAL;
+	fClock : REAL; 
+	ftRamp : REAL; 
+	ftWait : REAL; 
+	ftZero : REAL;
+	
+END_VAR
+VAR_OUTPUT
+	fWinchPos : REAL;
+	fWinchVel : REAL;
+	
+END_VAR
+
+VAR
+	fXSetPoint : REAL;
+	fVelSP : REAL; 
+	fSlopeExt : REAL;
+	fSlopeRetr : REAL;
+	fAcc : REAL;
+	fAccSP : REAL;
+	ftHold : REAL; 
+	bError : BOOL;
+	t1 : REAL;
+	t2 : REAL;
+	t3 : REAL;
+	t4 : REAL;
+	t5 : REAL;
+	t6 : REAL;
+	t7 : REAL; 
+	x1 : REAL;
+	x2 : REAL;
+	x3 : REAL;
+	x4 : REAL; 
+	x5 : REAL; 
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Calculating setpoint
+fXSetPoint := fPosRef - fPosInit;
+
+// Setting initial velocity
+fVelSP := fVelRef; 
+
+// Calculating slopes
+fSlopeExt := fVelInit - fVelSP; 
+fSlopeRetr := -fVelSP - fVelInit; 
+
+// Acceleration
+fAcc := fVelSP / ftRamp; 
+fAccSP := ((fVelSP*fVelSP) - (fVelInit*fVelInit))/fAcc; 
+
+ftHold := (fXSetPoint - fAccSP)/fVelSP; 
+
+// Check Error condition
+IF ftHold < 0 THEN
+	bError := TRUE;
+ELSE
+	bError := FALSE; 
+END_IF
+
+// Set time vars
+t1 := ftRamp;
+t2 := ftHold;
+t3 := ftRamp;
+t4 := ftWait;
+t5 := t1;
+t6 := t2;
+t7 := t3; 
+
+// Ramp Equations
+x1 := fPosInit + fVelInit*((ftZero + t1)-ftZero) - (fSlopeExt/t1)*((ftZero+t1)-ftZero)*((ftZero+t1)-ftZero)/2;
+x2 := x1 + fVelSP*((ftZero+t1+t2)-(ftZero+t1)); 
+x4 :=
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
