@@ -6,5 +6,15 @@
       <From>FC_Joy</From>
       <To>FC_JoyXNorm</To>
     </RenamedType>
+    <RenamedType>
+      <Type guid="d9662527-fc38-4981-ae55-b7dc46b02b9a">CLOSED</Type>
+      <From>Closed</From>
+      <To>PosCtrlClosedLoop</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="c6c8f772-383b-4a42-b371-a7ff5f4a9338">OPEN0</Type>
+      <From>Open0</From>
+      <To>VelCtrlOpenLoop</To>
+    </RenamedType>
   </Renames>
 </Refactors>

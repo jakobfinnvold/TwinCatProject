@@ -189,5 +189,108 @@ END_IF;
 Error := DINT_TO_LREAL(Error_0);]]></ST>
       </Implementation>
     </Method>
+    <Method Name="PosControl" Id="{92c21e71-f1d8-4199-9686-e56bdc054292}">
+      <Declaration><![CDATA[METHOD PosControl : REAL
+VAR_INPUT
+	Enable: LREAL;
+	KpGain: LREAL;
+	PosRef: LREAL;
+	Pos_feedback: LREAL;
+END_VAR
+VAR_OUTPUT
+	Ctrl_signal_Pos: LREAL;
+	PosErr: LREAL;
+END_VAR
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[(* Outputs for Atomic SubSystem: '<Root>/Closed-loop PosCtrl (Auto)' *)
+(* Sum: '<S1>/Sum' *)
+PosErr := PosRef - Pos_feedback;
+(* Product: '<S1>/Product' *)
+Ctrl_signal_Pos := KpGain * PosErr;
+(* Saturate: '<S1>/Predefined Saturation' *)
+
+IF Ctrl_signal_Pos > 1.0 THEN 
+    Ctrl_signal_Pos := 1.0;
+ELSIF Ctrl_signal_Pos < -1.0 THEN 
+    Ctrl_signal_Pos := -1.0;
+END_IF;
+
+(* End of Saturate: '<S1>/Predefined Saturation' *)
+
+
+(* Switch: '<S1>/Switch' *)
+
+IF Enable <= 0.0 THEN 
+    (* Outport: '<Root>/Ctrl_signal_Pos' incorporates:
+     *  Constant: '<S1>/Constant' *)
+    Ctrl_signal_Pos := 0.0;
+END_IF;
+
+(* End of Switch: '<S1>/Switch' *)
+(* End of Outputs for SubSystem: '<Root>/Closed-loop PosCtrl (Auto)' *)]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="VelControl" Id="{967a1153-9732-4ccc-b35a-3187adf9df9f}">
+      <Declaration><![CDATA[METHOD VelControl : REAL
+VAR_INPUT
+	vel_refms: LREAL;
+	Enable_Signal: LREAL;
+	QMax_refLMIN: LREAL;
+END_VAR
+VAR_OUTPUT
+	Ctrl_signalms: LREAL;
+END_VAR
+VAR
+	rtb_Switch: LREAL;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[(* Outputs for Atomic SubSystem: '<Root>/Open-loop VelControl (Manual)' *)
+(* Switch: '<S1>/Switch' incorporates:
+ *  Constant: '<S1>/Annulus_Area'
+ *  Constant: '<S1>/Boreside_Area'
+ *  Product: '<S1>/Product'
+ *  Product: '<S1>/Product1' *)
+
+IF vel_refms > 0.0 THEN 
+    rtb_Switch := 0.0033183 * vel_refms;
+ELSE 
+    rtb_Switch := vel_refms * 0.0023562;
+END_IF;
+
+(* End of Switch: '<S1>/Switch' *)
+
+
+(* Switch: '<S1>/Switch1' incorporates:
+ *  Constant: '<S1>/Constant'
+ *  Gain: '<S1>/UnitConv'
+ *  Product: '<S1>/Divide' *)
+
+IF Enable_Signal > 0.0 THEN 
+    Ctrl_signalms := (60000.0 * rtb_Switch) / QMax_refLMIN;
+ELSE 
+    Ctrl_signalms := 0.0;
+END_IF;
+
+(* End of Switch: '<S1>/Switch1' *)
+
+
+(* Saturate: '<S1>/Saturation' *)
+
+IF Ctrl_signalms > 0.05 THEN 
+    (* Outport: '<Root>/Ctrl_signal(m//s)' *)
+    Ctrl_signalms := 0.05;
+ELSIF Ctrl_signalms < -0.05 THEN 
+    (* Outport: '<Root>/Ctrl_signal(m//s)' *)
+    Ctrl_signalms := -0.05;
+END_IF;
+
+(* End of Saturate: '<S1>/Saturation' *)
+(* End of Outputs for SubSystem: '<Root>/Open-loop VelControl (Manual)' *)]]></ST>
+      </Implementation>
+    </Method>
   </POU>
 </TcPlcObject>
