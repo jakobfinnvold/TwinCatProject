@@ -54,45 +54,5 @@ ELSIF (G_Inputs.PressureSensorVals.nSupPressure < 10 OR G_Inputs.PressureSensorV
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="FC_JoyXNorm" Id="{35e96bf6-dbee-4757-9006-9e3e8aa2fb9a}">
-      <Declaration><![CDATA[METHOD FC_JoyXNorm : LREAL
-VAR_INPUT
-	nJoyX : INT := G_Inputs.nCylPos;
-	bIsManual : BOOL;
-	stJoyInputScale : ST_JoyInputScale; 
-END_VAR
-
-VAR_OUTPUT
-	fJoyX_Norm : LREAL;
-END_VAR
-
-VAR
-	fRawInput : LREAL;
-	fTempInput : LREAL;
-	fTempOutput : LREAL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[fRawInput := INT_TO_REAL(nJoyX);
-
-fTempInput := fRawInput - stJoyInputScale.fNeutralInputVal; 
-
-IF fTempInput > stJoyInputScale.fNeutralDeadband THEN
-	fTempOutput := fTempInput/(stJoyInputScale.fMaxInputVal - stJoyInputScale.fNeutralInputVal); 
-
-ELSIF fTempInput < -stJoyInputScale.fNeutralDeadband THEN
-	fTempOutput := fTempInput/(stJoyInputScale.fNeutralInputVal - stJoyInputScale.fMinInputVal);
-	
-ELSE
-	fTempOutput := 0.0; 
-END_IF
-
-IF NOT(bIsManual) THEN
-	fJoyX_Norm := 0.0;
-ELSE
-	fJoyX_Norm := LIMIT(stJoyInputScale.fMinOutputValue, fTempOutput, stJoyInputScale.fMaxOutputValue); 
-END_IF]]></ST>
-      </Implementation>
-    </Method>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_JoyInputScale" Id="{1a744545-8e9f-42d2-9c5e-33b2dfe99fe9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_JoyInputScale
+VAR_INPUT
+	nJoyX : INT := G_Inputs.nCylPos;
+	bIsManual : BOOL;
+	stJoyInputScale : ST_JoyInputScale; 
+END_VAR
+
+VAR_OUTPUT
+	fJoyX_Norm : LREAL;
+END_VAR
+
+VAR
+	fRawInput : LREAL;
+	fTempInput : LREAL;
+	fTempOutput : LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fRawInput := INT_TO_REAL(nJoyX);
+
+fTempInput := fRawInput - stJoyInputScale.fNeutralInputVal; 
+
+IF fTempInput > stJoyInputScale.fNeutralDeadband THEN
+	fTempOutput := fTempInput/(stJoyInputScale.fMaxInputVal - stJoyInputScale.fNeutralInputVal); 
+
+ELSIF fTempInput < -stJoyInputScale.fNeutralDeadband THEN
+	fTempOutput := fTempInput/(stJoyInputScale.fNeutralInputVal - stJoyInputScale.fMinInputVal);
+	
+ELSE
+	fTempOutput := 0.0; 
+END_IF
+
+IF NOT(bIsManual) THEN
+	fJoyX_Norm := 0.0;
+ELSE
+	fJoyX_Norm := LIMIT(stJoyInputScale.fMinOutputValue, fTempOutput, stJoyInputScale.fMaxOutputValue); 
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
