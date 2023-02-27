@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_WinchCylParams" Id="{0ff6c647-921e-499a-ae1b-d3a558eb2f54}">
+    <Declaration><![CDATA[TYPE ST_WinchCylParams :
+STRUCT
+	fEncoderOffset : UDINT; 
+	fDrumDiameter : REAL := 0.475; // m
+	fWireDiameter : REAL := 0.014; // m
+	fCylStroke : REAL := 0.5; // m
+	fRodDiameter : REAL := 0.035; //m
+	fPistonDiameter : REAL := 0.065; // m
+	fGearRatio : REAL := 1/20; 
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

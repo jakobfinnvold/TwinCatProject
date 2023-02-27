@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Encoder" Id="{ca6f1a86-95f3-4728-8dd3-40d427ebb073}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Encoder
+VAR_INPUT
+	nRawInput : UDINT; 
+	stParam : ST_WinchCylParams; 
+END_VAR
+VAR_OUTPUT
+	fPosition : REAL; 
+END_VAR
+VAR
+	nInput : DINT;
+	nTempInputDiff : DINT; 
+	nCount : DINT;
+	nMaxValue30bit : DINT := 1073741823;
+	nThreshold30bit : DINT := nMaxValue30bit/2; 
+	fScale16bit : LREAL := 360.0/65535.0;
+	fTempPos : LREAL; 
+END_VAR
+VAR PERSISTENT
+	nRounds : DINT;
+	nRawLast : DINT; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nInput := UDINT_TO_DINT(nRawInput);
+
+// ENcoder rounds
+IF (nTempInputDiff > nThreshold30bit) THEN
+	nRounds := nRounds - 1;
+END_IF
+
+IF (nTempInputDiff < -nThreshold30bit) THEN
+	nRounds := nRounds + 1; 
+END_IF
+
+// Count rounds
+nCount := nInput + nRounds*nMaxValue30bit; 
+
+// Pos output
+fTempPos := DINT_TO_LREAL(nCount)*fScale16bit - stParam.fEncoderOffset; 
+
+// Convert from winch drum positon to verical position. 
+fPosition := FC_DrumToPos(fTempPos, 0); // 0 here should be the registered value for zero position
+
+// Set zero position if load is on ground]]></ST>
+    </Implementation>
+    <Method Name="FC_DrumToPos" Id="{b74af71b-c805-4aa9-9ee3-29b34354b8d2}">
+      <Declaration><![CDATA[METHOD FC_DrumToPos : REAL
+VAR_INPUT
+	 fCurrentWinchPos : LREAL; 
+	 fRegisterdZeroPos : LREAL; 
+END_VAR
+VAR
+	stParams : ST_WinchCylParams; 
+END_VAR
+VAR_OUTPUT
+	fLoadPosition : LREAL; 
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fLoadPosition := fRegisterdZeroPos + fCurrentWinchPos*stParams.fDrumDiameter; // If f.eks. 1 round, then output is 1 * drum diameter ergo position is positive 0.475 m from zero
+// Need a variable to hold the zero position and add this to the load position. ]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

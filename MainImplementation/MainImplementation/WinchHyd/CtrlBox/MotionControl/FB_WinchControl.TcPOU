@@ -3,16 +3,21 @@
   <POU Name="FB_WinchControl" Id="{afefc06e-bd78-485d-a26b-89efa2ded290}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_WinchControl
 VAR_INPUT
-
+	bWinch : BOOL := ST_Enabeling.bWinchEnable;
+	bPosCtrl : BOOL := ST_Enabeling.bPosEnable;
+	bVelCtrl : BOOL := ST_Enabeling.bVelEnable;
 END_VAR
+
 VAR_OUTPUT
-	
+	fGeneratedPath : REAL;
+	fPosCtrlSignal : REAL;
+	fVelCtrlSignal : REAL; 
 END_VAR
 VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[fGeneratedPath := MotionGenerator()]]></ST>
     </Implementation>
     <Method Name="MotionGenerator" Id="{2c866856-81da-4d19-b69b-e7449cfd03ed}">
       <Declaration><![CDATA[METHOD MotionGenerator : REAL
