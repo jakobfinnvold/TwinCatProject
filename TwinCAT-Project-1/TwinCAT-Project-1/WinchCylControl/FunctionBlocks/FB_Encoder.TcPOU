@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Encoder" Id="{d2dd9e05-7aed-4f2a-9450-e20ab3b29606}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Encoder
+VAR_INPUT
+	nRawInput : UDINT;
+	stParam : ST_Params; 
+END_VAR
+VAR_OUTPUT
+	fPosition : LREAL; 
+END_VAR
+VAR PERSISTENT
+	nRounds : DINT;
+	nRawLast : DINT;
+END_VAR
+VAR
+	nInput : DINT;
+	nTempInputDiff : DINT;
+	nCount : DINT;
+	nMaxValue30bit : DINT := 1073741823;
+	nThreshold30Bit : DINT := nMaxValue30bit/2;
+	fScale16bit : LREAL := 360.0/65535.0;
+	fTempPos : LREAL; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nInput := UDINT_TO_DINT(nRawInput);
+
+nTempInputDiff := nInput - nRawLast;
+
+IF (nTempInputDiff > nThreshold30Bit) THEN
+	nRounds := nRounds -1;
+END_IF
+
+IF (nTempInputDiff < nThreshold30Bit) THEN
+	nRounds := nRounds + 1;
+END_IF
+
+nCount := nInput + nRounds*nMaxValue30bit;
+
+fPosition := DINT_TO_LREAL(nCount)*fScale16bit - stParam.fEncoderOffset;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ControlBoxInputs" Id="{a7902a48-5254-4395-a185-b9f08ce38309}">
+    <Declaration><![CDATA[TYPE ST_ControlBoxInputs :
+STRUCT
+	bAutoMode AT %I* : BOOL;
+	bManualMode AT %I*: BOOL;
+	bStartButton AT %I*: BOOL;
+	bStopButton AT %I* : BOOL; 
+	bTopSwitch AT %I*: BOOL; 
+	nJoyX : INT;
+	nJoyY : INT; 
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

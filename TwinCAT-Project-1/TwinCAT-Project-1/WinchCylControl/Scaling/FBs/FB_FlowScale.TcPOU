@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_FlowScale" Id="{1a870647-cfa4-4bb0-9dee-b2817471296c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_FlowScale
+VAR_INPUT
+	nRawInputFlow : INT; 
+	stFlowScaling : ST_FlowScale; 
+END_VAR
+VAR_OUTPUT
+	fScaledOutputFlow : LREAL; 
+END_VAR
+VAR
+	fRealRaw : LREAL; 
+	fTempIn : LREAL;  
+	fTempOut : LREAL; 
+	fMaxFlow : LREAL := 150.0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fRealRaw := INT_TO_LREAL(nRawInputFlow); 
+
+fTempIn := fRealRaw - stFlowScaling.fNeutralInputValue; 
+
+IF fTempIn > stFlowScaling.fNeutralInputValue THEN
+	fTempOut := fTempIn/(stFlowScaling.fMaxInputValue - stFlowScaling.fNeutralInputValue);
+ELSIF fTempIn < stFlowScaling.fNeutralInputValue THEN
+	fTempOut := fTempIn/(stFlowScaling.fNeutralInputValue - stFlowScaling.fMinInputValue);
+ELSE
+	fTempOut := 0.0;
+END_IF
+
+fScaledOutputFlow := LIMIT(stFlowScaling.fMaxOutputValue, fTempOut*fMaxFlow, stFlowScaling.fMinOutputValue);
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

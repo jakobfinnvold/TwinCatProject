@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_PressureScale" Id="{4d9f4367-6a68-4531-b7c1-3486151f1a06}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PressureScale
+VAR_INPUT
+	//nRawPressureVal40 : INT; 
+	nRawPressureVal400 : INT; 
+END_VAR
+VAR_OUTPUT
+	//fScaledPressureVal40 : LREAL; 
+	fScaledPressureVal400 : LREAL; 
+END_VAR
+VAR
+	//fMaxPressure40 : LREAL := 40.0;
+	fMaxPressure400 : LREAL := 400.0;
+	fMaxInput : REAL := 32767.0; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//fScaledPressureVal40 := (INT_TO_LREAL(nRawPressureVal40)/fMaxInput) * fMaxPressure40; 
+
+fScaledPressureVal400 := (INT_TO_LREAL(nRawPressureVal400)/fMaxInput) * fMaxPressure400; 
+
+
+	
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

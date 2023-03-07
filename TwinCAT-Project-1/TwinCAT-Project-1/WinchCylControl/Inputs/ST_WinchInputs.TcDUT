@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_WinchInputs" Id="{3f5bf0c0-8867-45cf-b1c3-92de94f0d28a}">
+    <Declaration><![CDATA[TYPE ST_WinchInputs :
+STRUCT
+	fWinchInletPressure : REAL;
+	fWinchInletPressureSensor : REAL;
+	fWinchOutletPressure : REAL;
+	fWinchOutletPressureB1 : REAL;
+	fWinchDrainPressure : REAL; 
+	fWinchInletFlow : REAL; 
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

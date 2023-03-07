@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_PathParameters" Id="{0eae7b03-feb5-495c-bd9e-4f30c1657eb4}">
+    <Declaration><![CDATA[TYPE ST_PathParameters :
+STRUCT
+	x0: LREAL := 0;
+	v_0: LREAL := 0;
+	x_ref: LREAL := 0.3;
+	v_ref: LREAL := 0.15;
+	t0: LREAL := 0;
+	tRamp: LREAL := 2;
+	tWait: LREAL := 2;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ValveOutput" Id="{143b0638-37f5-4947-95ed-bb152f86548d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ValveOutput
+VAR_INPUT
+	bEnable : BOOL; 
+	bDeadBandCompOn : BOOL;
+	stValveDeadBand : ST_ValveDeadBand;
+	fNormInput : LREAL; 
+END_VAR
+VAR_OUTPUT
+	bEnableValveOutput : BOOL;
+	nOutput : INT;
+END_VAR
+VAR
+	nOffset : INT := 19660;
+	nMaxValue : INT := 29490;
+	nMinValue : INT := 9830;
+	nTempOutput : INT; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bDeadBandCompOn THEN
+	IF fNormInput > 0.0 THEN
+		nTempOutput := LREAL_TO_INT(ABS(fNormInput*(stValveDeadBand.fPosMax - stValveDeadBand.fPosMin) + stValveDeadBand.fPosMin)); 
+	ELSIF fNormInput < 0.0 THEN
+		nTempOutput := LREAL_TO_INT(fNormInput*(stValveDeadBand.fNegMax - stValveDeadBand.fNegMin) - stValveDeadBand.fNegMin);
+	ELSE
+		nTempOutput := nOffset; 
+	END_IF
+	
+ELSE
+	IF fNormInput > 0.0 THEN
+		nTempOutput := LREAL_TO_INT(ABS(fNormInput*(32767.0 - 19660.0) + 19660.0));
+	ELSIF fNormInput < 0.0 THEN
+		nTempOutput := LREAL_TO_INT(ABS(fNormInput*(0-19660.0) - 19660.0));
+	ELSE
+		nTempOutput := nOffset;		
+	END_IF
+END_IF
+
+IF bEnable THEN
+	nOutput := LIMIT(nMinValue, nTempOutput, nMaxValue);
+	bEnableValveOutput := TRUE;
+ELSE
+	nOutput := nOffset;
+	bEnableValveOutput := FALSE; 
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

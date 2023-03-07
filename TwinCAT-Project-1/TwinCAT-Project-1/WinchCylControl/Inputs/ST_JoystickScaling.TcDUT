@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_JoystickScaling" Id="{2a395b01-f5fe-4c6f-8b04-746bc344a3bf}">
+    <Declaration><![CDATA[TYPE ST_JoystickScaling :
+STRUCT
+	fMaxInputVal : LREAL := 20509.0;
+	fMinInputVal : LREAL := 11787.0; 
+	fNeutralInputVal : LREAL := 16175.0;
+	fNeutralDeadBand : LREAL := 50.0; 
+	fMaxOutputVal : LREAL := 1.0;
+	fMinOutputVal : LREAL := -1.0;
+	fNeutralOutputVal : LREAL := 0.0;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

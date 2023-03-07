@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_JoystickInputScaling" Id="{c4d44128-af55-4dc1-a0ce-a5fc9bbd7eb6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_JoystickInputScaling
+VAR_INPUT
+	bEnable : BOOL; // Start Button
+	bSwitch : BOOL; // TopSwitch
+	nRawInput : INT;
+	stJoyInputScaling : ST_JoystickScaling; 
+	
+END_VAR
+VAR_OUTPUT
+	fNormOutputC : LREAL; // Scaled cylinder output
+	fNormOutputW : LREAL; // Scaled winch output
+END_VAR
+VAR
+	fRawInput : LREAL;
+	fTempInput : LREAL;
+	fTempOutput : LREAL; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fRawInput := INT_TO_LREAL(nRawInput);
+
+fTempInput := fRawInput - stJoyInputScaling.fNeutralInputVal; 
+
+IF fTempInput > stJoyInputScaling.fNeutralDeadBand THEN
+	fTempOutput := fTempInput/(stJoyInputScaling.fMaxInputVal - stJoyInputScaling.fNeutralInputVal);
+ELSIF fTempInput < -stJoyInputScaling.fNeutralDeadBand THEN
+	fTempOutput := fTempInput/(stJoyInputScaling.fNeutralInputVal - stJoyInputScaling.fMinInputVal); 
+ELSE
+	fTempOutput := 0.0;
+END_IF
+
+IF NOT (bEnable) THEN
+	fNormOutputC := 0; // If startbutton is not held, no joystick output
+	fNormOutputW := 0.0;
+ELSIF bEnable AND NOT bSwitch THEN
+	fNormOutputC := LIMIT(stJoyInputScaling.fMinOutputVal, fTempOutput, stJoyInputScaling.fMaxOutputVal); 
+	fNormOutputW := 0.0; // If startbutton is held but no top switch, cylinder gets output
+ELSE
+	fNormOutputC := 0.0; // If startbutton AND topswitch, winch gets output
+	fNormOutputW := LIMIT(stJoyInputScaling.fMinOutputVal, fTempOutput, stJoyInputScaling.fMaxOutputVal); 
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

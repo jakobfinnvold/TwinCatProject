@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G_InputList" Id="{77bc92ae-1639-447f-9e41-4f3c3d35db7b}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	stModeSelect : ST_ControlBoxInputs; 
+	//bManualSelect : BOOL := ST_ControlBoxInputs.bManualMode;
+	//bAutoSelect : BOOL := ST_ControlBoxInputs.bAutoMode;
+	//bStart : BOOL := ST_ControlBoxInputs.bStartButton;
+	//bStop : BOOL := ST_ControlBoxInputs.bStopButton;
+	//bTopSwitchToggle : BOOL := ST_ControlBoxInputs.bTopSwitch;
+
+	// Joystick
+	stJoystick : ST_ControlBoxInputs; 
+	//nJoyXPos : INT := ST_ControlBoxInputs.nJoyX;
+	//nJoyYPos : INT := ST_ControlBoxInputs.nJoyY;
+
+	// Cylinder, Winch and pressure inputs
+	fSupplyPressure AT %Q* : LREAL;
+	fReturnPressure AT %Q*: LREAL;  
+	
+	stWinchPressure : ST_WinchInputs;
+	//fWinchPressureIn AT %Q* : LREAL := ST_WinchInputs.fWinchInletPressure; // A
+	//fWinchPressureSensor AT %Q* : LREAL := ST_WinchInputs.fWinchInletPressureSensor; // A1
+ 	//fWinchPressureOut AT %Q* : LREAL := ST_WinchInputs.fWinchOutletPressure; // B
+	//fWinchPressureOutB1 AT %Q* : LREAL := ST_WinchInputs.fWinchOutletPressureB1; // B1
+	
+	stCylinderPressures : ST_CylinderInputs;
+	//fRodSidePressure AT %Q* : LREAL := ST_CylinderInputs.fRodPressure; 
+	//fBoreSidePressure AT %Q* : LREAL := ST_CylinderInputs.fPistonPressure; 
+	
+	// Flows
+	//fWinchFlow AT %Q* : LREAL := ST_WinchInputs.fWinchInletFlow;  
+	
+	// Får errors her
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_FlowScale" Id="{97d55127-9931-47b8-900d-e1c53fdce1c3}">
+    <Declaration><![CDATA[TYPE ST_FlowScale :
+STRUCT
+	fMaxInputValue :LREAL := 32295.0;
+ 	fMinInputValue :LREAL := 0.0;
+ 	fNeutralInputValue :LREAL := 15450;
+ 	fNeutralDeadband :LREAL := 50.0;
+	fMaxOutputValue :LREAL := 150.0; 
+	fMinOutputValue :LREAL := -150.0; 
+	fNeutralOutputValue :LREAL := 0.0; 
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

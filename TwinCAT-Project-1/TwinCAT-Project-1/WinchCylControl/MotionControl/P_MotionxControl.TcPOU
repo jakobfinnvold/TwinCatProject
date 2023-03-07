@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P_MotionxControl" Id="{cd3a9b77-bcda-4900-a5d3-3eb8ac00bb6e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_MotionxControl
+VAR
+	// Placeholder for the path
+	fMyPath : Path_signal_gen(); 
+	fPosCtrl : Closed();
+	fVelCtrl : Open0(); 
+	
+	// Starting conditions for cylinder x winch
+	stStartingConditions : ST_MotionParameters; 
+	
+	// Parameter settings for the path (ramp/x0/v0) etc.
+	stPathParams : ST_PathParameters;
+	
+	// Controller tuning
+	fKpP : LREAL := 1; 
+	
+	// Timer to initialize path
+	bTimerStart : BOOL := FALSE; 
+	myTimer : TON; 
+	
+	// References for controllers
+	fPosRef : LREAL; 
+	fVelRef : LREAL; 
+	fError : LREAL; 
+	fCylinderFeedback : LREAL := ST_CylinderInputs.fCylinderPosition; 
+	fWinchFeedBack : LREAL := FB_Encoder.fPosition; 
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF stStartingConditions.bCylinderEnable THEN
+	bTimerStart := TRUE;
+	myTimer(IN := bTimerStart, PT:=T#20S);
+	fMyPath(x0:=stPathParams.x0, v_0:=stPathParams.v_0, x_ref:=stPathParams.x_ref, v_ref:=stPathParams.v_ref, t0:=0, 
+	tRamp:=stPathParams.tRamp, tWait:=stPathParams.tWait, t:=myTimer);
+	
+	fPosRef := fMyPath.x;    
+	fVelRef := fMyPath.v;
+	fError := fMyPath.Error; 
+	
+	fPosCtrl(Enable := stStartingConditions.bClosedLoopStart, KpGain := fKpP, 
+	PosRef := fPosRef, Pos_feedback := fCylinderFeedback(*Feedback*));  
+	
+	IF myTimer.Q := TRUE THEN
+		bTimerStart := FALSE; 
+	END_IF
+	
+END_IF
+
+IF stStartingConditions.bWinchEnable THEN
+	bTimerStart := TRUE;
+	myTimer(IN := bTimerStart, PT := T#20S); 
+	fMyPath(x0:=stPathParams.x0, v_0:=stPathParams.v_0, x_ref:=stPathParams.x_ref, v_ref:=stPathParams.v_ref, t0:=0, 
+	tRamp:=stPathParams.tRamp, tWait:=stPathParams.tWait, t:=myTimer);
+	
+	fPosRef := fMyPath.x;    
+	fVelRef := fMyPath.v;
+	fError := fMyPath.Error;
+	
+	fVelCtrl(vel_refms := fVelRef, Enable_Signal := stStartingConditions.bOpenLoopStart, QMax_refLMIN := 150.0); 
+	
+	IF myTimer.Q := TRUE THEN
+		bTimerStart := FALSE; 
+	END_IF
+	
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

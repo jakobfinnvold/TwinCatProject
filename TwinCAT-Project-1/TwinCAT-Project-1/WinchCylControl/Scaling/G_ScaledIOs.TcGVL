@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G_ScaledIOs" Id="{84e1f7b6-fe25-4091-9f91-3f25b8eb9091}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	scaledJoyX : LREAL := FB_JoystickInputScaling.fNormOutputC; 
+	scaledJoyY : LREAL := FB_JoystickInputScaling.fNormOutputW; 
+	scaledValve : INT := FB_ValveOutput.nOutput; // Valve output based on joystick input [-1...1] 1 = 29490.0, -1 = 9830
+	fLoadPosition : LREAL := FB_Encoder.fPosition; 
+	fWinchFlow : LREAL := FB_FlowScale.fScaledOutputFlow; 
+	fWinchDrainPressure : LREAL := FB_PressureScale.fScaledPressureVal40;
+	fWinchPressure : LREAL := FB_PressureScale.fScaledPressureVal400; 
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

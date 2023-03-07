@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P_Scaling" Id="{00b67dfe-ef4f-4797-90ed-2c99814fb5b7}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_Scaling
+VAR
+	stJoy : ST_JoystickScaling; // Unscaled Input variables from joystick
+	stCylinder : ST_CylinderInputs; // Unscaled pressure x flow values (Cylinder)
+	stWinch : ST_WinchInputs; // Unscaled pressure x flow values (Winch)
+	fValveScaled : LREAL; 
+	
+	// FBs
+	scalePressure : FB_PressureScale; 
+	scaleFlow : FB_FlowScale; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// Scaling pressures
+G_ScaledIOs.fCylinderInputsScaled.fRodPressureS := scalePressure(nRawPressureVal400 := stCylinder.fRodPressure);
+G_ScaledIOs.fCylinderInputsScaled.fPistonPressureS := scalePressure(nRawPressureVal400 := stCylinder.fPistonPressure); 
+G_ScaledIOs.fWinchInputsScaled.fWinchInletPressureS := scalePressure(nRawPressureVal400 := stWinch.fWinchInletPressure);
+G_ScaledIOs.fWinchInputsScaled.fWinchInletPressureSensorS := scalePressure(nRawPressureVal400 := stWinch.fWinchInletPressureSensor);
+G_ScaledIOs.fWinchInputsScaled.fWinchOutletPressureS := scalePressure(nRawPressureVal400 := stWinch.fWinchOutletPressure);
+G_ScaledIOs.fWinchInputsScaled.fWinchOutletPressureB1S := scalePressure(nRawPressureVal400 := stWinch.fWinchOutletPressureB1);
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
