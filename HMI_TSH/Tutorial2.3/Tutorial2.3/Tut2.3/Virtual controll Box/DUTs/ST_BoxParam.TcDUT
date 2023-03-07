@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_BoxParam" Id="{2f6d0d4f-6fcd-4c49-8e33-0c945511ad34}">
+    <Declaration><![CDATA[TYPE ST_BoxParam :
+STRUCT
+	bStartPushButton : BOOL;
+	bStopPushButton : BOOL;
+	bTopSJoy : BOOL;
+	fJoy_X : LREAL;
+	fJoy_Y : LREAL;
+	bManual : BOOL;
+	bAuto : BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

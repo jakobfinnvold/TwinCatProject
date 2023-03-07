@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ModeVisu" Id="{fa1ca2fb-23cc-4093-984f-ae1fb5ab29a5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ModeVisu IMPLEMENTS I_Mode
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Auto" Id="{09186efb-5f05-45f5-adc8-b7938cc6a484}">
+      <Declaration><![CDATA[METHOD Auto
+VAR_INPUT
+	bEnable : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bEnable THEN 
+	HMI.eMode := E_Mode.Auto;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Manual" Id="{c6924fcd-4e1a-4c1d-94ef-c2847d6bb2d0}">
+      <Declaration><![CDATA[METHOD Manual
+VAR_INPUT
+	bEnable: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bEnable THEN 
+	HMI.eMode := E_Mode.Manual;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OFF" Id="{31a10150-8af5-42cb-a52e-e19248c6a30f}">
+      <Declaration><![CDATA[METHOD OFF
+VAR_INPUT
+	bEnable: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bEnable THEN 
+	HMI.eMode := E_Mode.OFF;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_ModeVisu">
+      <LineId Id="29" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ModeVisu.Auto">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_ModeVisu.Manual">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ModeVisu.OFF">
+      <LineId Id="7" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
