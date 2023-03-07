@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ModeCBox" Id="{507e1aeb-a33b-4800-85b4-509438143db2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ModeCBox IMPLEMENTS I_Mode
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Auto" Id="{1b9c99d4-5e07-4a51-9eba-e425764ec612}">
+      <Declaration><![CDATA[METHOD Auto
+VAR_INPUT
+	bEnable : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bEnable THEN 
+	Output.eMode := E_Mode.Auto;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Manual" Id="{6268042c-94fe-4f98-8dd7-0c72f90927b3}">
+      <Declaration><![CDATA[METHOD Manual
+VAR_INPUT
+	bEnable : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bEnable THEN 
+	Output.eMode := E_Mode.Manual;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OFF" Id="{9b9adc2b-14e0-4047-90a5-5b93f9d701dc}">
+      <Declaration><![CDATA[METHOD OFF 
+VAR_INPUT
+	bEnable : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bEnable THEN 
+	Output.eMode := E_Mode.OFF;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_ModeCBox">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ModeCBox.Auto">
+      <LineId Id="11" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ModeCBox.Manual">
+      <LineId Id="11" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ModeCBox.OFF">
+      <LineId Id="11" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

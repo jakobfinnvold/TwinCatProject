@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ModeSelect" Id="{881f20d6-17e9-402b-80f4-efea5e3c2672}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ModeSelect
+VAR_INPUT
+	bControlBox : BOOL;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbModeVisu : FB_ModeVisu;
+	fbMode : I_Mode := fbModeVisu;
+	fbModeCBox: FB_ModeCBox;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT (bControlBox) THEN
+	
+fbMode := fbModeVisu;
+	IF NOT (HMI.stVisuParam.bOn) THEN
+			fbMode.OFF(TRUE);
+			fbMode.Auto(FALSE);
+			fbMode.Manual(FALSE);
+		
+	ELSIF (HMI.stVisuParam.bOn) AND NOT (HMI.stVisuParam.bAuto) THEN
+			fbMode.OFF(FALSE);
+			fbMode.Auto(FALSE);
+			fbMode.Manual(TRUE);
+		
+	ELSIF (HMI.stVisuParam.bOn) AND (HMI.stVisuParam.bAuto) THEN
+			fbMode.OFF(FALSE);
+			fbMode.Auto(TRUE);
+			fbMode.Manual(FALSE);
+		
+	ELSE
+			fbMode.OFF(FALSE);
+			fbMode.Auto(FALSE);
+			fbMode.Manual(FALSE);
+		
+	END_IF
+	
+ELSE
+	
+	fbMode := fbModeCBox;
+	IF NOT (Input.stBoxParam.bAuto) AND NOT(Input.stBoxParam.bManual) THEN
+			fbMode.OFF(TRUE);
+			fbMode.Auto(FALSE);
+			fbMode.Manual(FALSE);
+		
+	ELSIF NOT (Input.stBoxParam.bAuto) AND Input.stBoxParam.bManual THEN
+			fbMode.OFF(FALSE);
+			fbMode.Auto(FALSE);
+			fbMode.Manual(TRUE);
+		
+	ELSIF NOT (Input.stBoxParam.bManual) AND Input.stBoxParam.bAuto THEN
+			fbMode.OFF(FALSE);
+			fbMode.Auto(TRUE);
+			fbMode.Manual(FALSE);
+		
+	ELSE
+			fbMode.OFF(FALSE);
+			fbMode.Auto(FALSE);
+			fbMode.Manual(FALSE);
+		
+	END_IF
+	
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ModeSelect">
+      <LineId Id="9" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="48" Count="20" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="69" Count="2" />
+      <LineId Id="73" Count="20" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="103" Count="1" />
+      <LineId Id="107" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

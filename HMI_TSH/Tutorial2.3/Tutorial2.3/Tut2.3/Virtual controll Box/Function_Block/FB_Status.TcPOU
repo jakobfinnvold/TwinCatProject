@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Status" Id="{fda19a98-9174-4376-945d-cfe330fd16ee}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Status
+VAR_INPUT
+	bFault : BOOL;
+	bStart : BOOL;
+	bStop : BOOL;
+	bRunning : BOOL;
+	bAuto : BOOL;
+	bOn : BOOL;
+END_VAR
+VAR_OUTPUT
+	eStatus : E_Status := E_Status.NotReady;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+CASE eStatus OF 
+
+	E_Status.NotReady:
+		IF bOn THEN
+			eStatus := E_Status.Ready;
+		ELSE
+			HMI.stVisuParam.bFault := FALSE;
+			HMI.stVisuParam.bStop := FALSE;
+			eStatus := E_Status.NotReady;
+			
+			
+		END_IF
+		
+	E_Status.Ready:
+		IF bOn THEN
+			eStatus := E_Status.Ready;
+		ELSE
+			eStatus := E_Status.NotReady;
+		END_IF
+		
+		IF bStart THEN
+			eStatus := E_Status.Starting;
+		END_IF
+	
+	E_Status.Starting:
+			eStatus := E_Status.Running;
+		
+	E_Status.Running:
+		IF bAuto AND bStart AND bOn THEN
+			HMI.stVisuParam.bRunning := TRUE;
+			eStatus := E_Status.Running;
+			
+		ELSIF
+			bFault THEN
+			eStatus := E_Status.Fault;
+			
+		ELSIF
+			 NOT (bAuto) AND bOn THEN
+			HMI.stVisuParam.bRunning := TRUE;
+			eStatus := E_Status.Running;
+				IF bStop THEN
+				eStatus := E_Status.Stopping;
+				END_IF
+		
+		
+		ELSE
+			HMI.stVisuParam.bRunning := FALSE;
+			eStatus := E_Status.Ready;
+		END_IF
+		
+		
+		
+		
+	E_Status.Stopping:
+		HMI.stVisuParam.bRunning := FALSE;
+		bStop := TRUE;
+		//Set in a delay to show the stopping longer.
+		eStatus := E_Status.NotReady;
+	
+	E_Status.Fault:
+		//Til steget der vi dektekterer fault//eStatus := E_Status.Fault;
+		IF bOn THEN	
+			HMI.stVisuParam.bStop := TRUE; // LIGHT
+			HMI.stVisuParam.bRunning := FALSE;
+			eStatus := E_Status.Fault;
+		ELSE
+			eStatus := E_Status.NotReady;
+		END_IF
+END_CASE
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Status">
+      <LineId Id="782" Count="0" />
+      <LineId Id="257" Count="0" />
+      <LineId Id="383" Count="0" />
+      <LineId Id="570" Count="2" />
+      <LineId Id="574" Count="0" />
+      <LineId Id="765" Count="1" />
+      <LineId Id="575" Count="0" />
+      <LineId Id="745" Count="0" />
+      <LineId Id="755" Count="0" />
+      <LineId Id="576" Count="13" />
+      <LineId Id="591" Count="0" />
+      <LineId Id="599" Count="1" />
+      <LineId Id="650" Count="1" />
+      <LineId Id="682" Count="0" />
+      <LineId Id="750" Count="0" />
+      <LineId Id="752" Count="1" />
+      <LineId Id="751" Count="0" />
+      <LineId Id="754" Count="0" />
+      <LineId Id="684" Count="0" />
+      <LineId Id="687" Count="1" />
+      <LineId Id="686" Count="0" />
+      <LineId Id="716" Count="1" />
+      <LineId Id="715" Count="0" />
+      <LineId Id="747" Count="0" />
+      <LineId Id="749" Count="0" />
+      <LineId Id="689" Count="0" />
+      <LineId Id="685" Count="0" />
+      <LineId Id="683" Count="0" />
+      <LineId Id="681" Count="0" />
+      <LineId Id="674" Count="0" />
+      <LineId Id="669" Count="0" />
+      <LineId Id="632" Count="0" />
+      <LineId Id="606" Count="2" />
+      <LineId Id="759" Count="0" />
+      <LineId Id="615" Count="0" />
+      <LineId Id="614" Count="0" />
+      <LineId Id="609" Count="2" />
+      <LineId Id="739" Count="0" />
+      <LineId Id="762" Count="0" />
+      <LineId Id="761" Count="0" />
+      <LineId Id="735" Count="0" />
+      <LineId Id="763" Count="1" />
+      <LineId Id="505" Count="0" />
+      <LineId Id="318" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="784" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

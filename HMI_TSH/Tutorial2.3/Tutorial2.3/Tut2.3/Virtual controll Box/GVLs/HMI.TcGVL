@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="HMI" Id="{2c17b807-7a1f-4985-aea0-7bd489cec1d7}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+eStatus : E_Status;
+stVisuParam : ST_VisuParam;
+eMode : E_Mode;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>
