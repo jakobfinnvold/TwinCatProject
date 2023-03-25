@@ -51,7 +51,16 @@
     <Compile Include="MotionControl\PID-Controllers\Open0.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MotionControl\P_MotionxControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MotionControl\Structs\ST_MotionParameters.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MotionControl\Structs\ST_Params.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MotionControl\Structs\ST_PathParameters.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MotionControl\Structs\ST_ValveDeadBand.TcDUT">
@@ -70,9 +79,27 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Scaling\FBs\FB_FlowScale.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scaling\FBs\FB_PressureScale.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Scaling\G_ScaledIOs.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="Scaling\P_Scaling.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scaling\Structs\ST_FlowScale.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scaling\Structs\ST_ScaledCylinderInputs.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scaling\Structs\ST_ScaledWinchInputs.TcDUT">
+      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

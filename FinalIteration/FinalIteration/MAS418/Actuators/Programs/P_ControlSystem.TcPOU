@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P_ControlSystem" Id="{e35c27a8-cf04-4318-941a-9e5f9458101b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_ControlSystem
+VAR
+	fbManualWinchControl : FB_Manual;
+	fbManualCylinderControl : FB_Manual; 
+	fbAutoWinchControl : FB_autoWinch;
+	fbAutoCylinderControl : FB_AutoCyl; 
+	
+	fWinchManualSignal : LREAL;
+	fCylManualSignal : LREAL; 
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[G_Modes.bAutoMode := G_InputsRaw.bSelectAuto;
+G_Modes.bManualMode := G_InputsRaw.bSelectManual; 
+G_Modes.bSwitch := G_InputsRaw.bJoyTopSwitch; 
+G_ControlParameters.bCylEnable := G_Modes.bCylEnable;
+G_ControlParameters.bWinchEnable := G_Modes.bWinchEnable; 
+
+fbManualCylinderControl(
+	bEnable := G_Modes.bManualMode AND G_InputsRaw.bStartButton AND NOT G_Modes.bSwitch,
+	fInput := G_InputsScaled.fJoystickScaledX,
+	fControlRefSignal => fCylManualSignal
+); 
+
+fbManualWinchControl(
+	bEnable := G_Modes.bManualMode AND G_Modes.bSwitch AND G_InputsRaw.bStartButton,
+	fInput := G_InputsScaled.fJoystickScaledY,
+	fControlRefSignal => fWinchManualSignal
+); 
+
+fbAutoWinchControl(
+	bEnable := G_Modes.bAutoMode AND G_ControlParameters.bWinchEnable,
+	bStartMotion := G_InputsRaw.bStartButton,
+	bStopMotion := G_InputsRaw.bStopButton,
+	stMotionRefGenerator := G_Modes.stMotionRefWinch,
+	stClosedLoopControl := G_Parameters.stControl.stWinchControlClosedSettings,
+	stOpenLoopControl := G_Parameters.stControl.stWinchControlOpenSettings,
+	stControlSelect := G_Modes.stWinchControl,
+	stScaledValues := G_Parameters.stCommonScaling,
+	//stScaledWinch := G_Parameters.stCommonScaling,
+	fPositionFeedback := G_InputsScaled.fWirePosition,
+	fTime => G_ControlParameters.fWinchTimer,
+	fVelocityReference_ms => G_ControlParameters.fVelRefWinch,
+	fPositionReference_m => G_ControlParameters.fPosRefWinch,
+	fControlOutputNormalized => G_ControlParameters.fControlSignal_Winch,
+	fPositionError_mm => G_ControlParameters.fPosErrorWinch); 
+	
+fbAutoCylinderControl(
+	bEnable := G_Modes.bAutoMode AND G_ControlParameters.bCylEnable,
+	bStartMotion := G_InputsRaw.bStartButton,
+	bStopMotion := G_InputsRaw.bStopButton,
+	stMotionRefGenerator := G_Modes.stMotionRefCyl,
+	stClosedLoopControl := G_Parameters.stControl.stCylControlCloesSettings,
+	stOpenLoopControl := G_Parameters.stControl.stCylControlOpenSettings,
+	stControlSelect := G_Modes.stCylinderControl,
+	stScaledValues := G_Parameters.stCommonScaling,
+	//stScaledWinch := G_Parameters.stCommonScaling,
+	fPositionFeedback := G_InputsScaled.fCylPosition,
+	fTime => G_ControlParameters.fCylTimer,
+	fVelocityReference_ms => G_ControlParameters.fVelRefCyl,
+	fPositionReference_m => G_ControlParameters.fPosRefCyl,
+	fControlOutputNormalized => G_ControlParameters.fControlSignal_Cyl,
+	fPositionError_mm => G_ControlParameters.fPosErrorCyl); 
+
+IF G_Modes.bManualMode THEN
+	G_ControlParameters.fCylinder_ControlInput := fCylManualSignal;
+	G_ControlParameters.fWinch_ControlInput := fWinchManualSignal;
+ELSIF G_Modes.bAutoMode THEN
+	G_ControlParameters.fCylinder_ControlInput := G_ControlParameters.fControlSignal_Cyl;
+	G_ControlParameters.fWinch_ControlInput := G_ControlParameters.fControlSignal_Winch;
+	
+ELSE
+	G_ControlParameters.fCylinder_ControlInput := 0.0;
+	G_ControlParameters.fWinch_ControlInput := 0.0; 
+END_IF
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_MotionReferenceGenerator" Id="{b1e96847-ba25-4481-b177-136e45a9f3cc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MotionReferenceGenerator
+VAR_INPUT
+	bEnable: BOOL;
+	stMotionParameters : ST_MotionReferenceParams;
+	fClock_s: LREAL;
+END_VAR
+VAR_OUTPUT
+	fPositionReference_m: LREAL;
+	fVelocityReference_m: LREAL;
+	fTotalMotionTime_s: LREAL;
+	bErrorSignal: BOOL;
+END_VAR
+VAR
+	fStartPosition_m		: LREAL;
+	fStartVelocity_m		: LREAL;
+	fPositionSetpoint_ms	: LREAL;
+	fVelocitySetpoint_m		: LREAL;
+	fTimeBeforeStarting_s	: LREAL;
+	fRampTime_s				: LREAL;
+	fHoldPositionTime_s		: LREAL;
+	Error: DINT;
+	slopeExt: LREAL;
+	slopeRetr : LREAL;
+	tHold: LREAL;
+	x1: LREAL;
+	x4: LREAL;
+	x1_tmp: LREAL;
+	x1_tmp_tmp: LREAL;
+	x4_tmp: LREAL;
+	x4_tmp_tmp: LREAL;
+	x4_tmp_tmp_0: LREAL;
+	x4_tmp_tmp_1: LREAL;
+	x1_tmp_0: LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// Saturating
+fStartPosition_m := LIMIT(stMotionParameters.fMinPosition, stMotionParameters.fStartPosition_m, stMotionParameters.fMaxPosition);
+fStartVelocity_m := LIMIT(0.0, stMotionParameters.fStartVelocity_m, stMotionParameters.fMaxVelocity);
+fPositionSetpoint_ms := LIMIT(stMotionParameters.fMinPosition, stMotionParameters.fPositionSetpoint_m, stMotionParameters.fMaxPosition);
+fVelocitySetpoint_m := LIMIT(0.0, stMotionParameters.fVelocitySetpoint_m, stMotionParameters.fMaxVelocity);
+fTimeBeforeStarting_s := LIMIT(0.0, stMotionParameters.fTimeBeforeStarting_s, 10.0);
+fRampTime_s := LIMIT(0.0, stMotionParameters.fRampTime_s, 10.0);
+fHoldPositionTime_s := LIMIT(0.0, stMotionParameters.fHoldPositionTime_s, 60.0);
+
+// Start of path
+slopeExt := fStartVelocity_m - fVelocitySetpoint_m;
+slopeRetr := ( -fVelocitySetpoint_m) - fStartVelocity_m;
+tHold := ((fPositionSetpoint_ms - fStartPosition_m) - (((fVelocitySetpoint_m * fVelocitySetpoint_m) - (fStartVelocity_m * fStartVelocity_m)) / (fVelocitySetpoint_m / fRampTime_s))) / fVelocitySetpoint_m;
+
+
+IF tHold < 0.0  THEN 
+    bErrorSignal := TRUE;
+ELSE 
+    bErrorSignal := FALSE;
+END_IF;
+x1_tmp_tmp := fTimeBeforeStarting_s + fRampTime_s;
+x1_tmp := x1_tmp_tmp - fTimeBeforeStarting_s;
+x1_tmp_0 := slopeExt / fRampTime_s;
+x1 := ((x1_tmp * fStartVelocity_m) + fStartPosition_m) - ((x1_tmp_0 * (x1_tmp * x1_tmp)) / 2.0);
+x4_tmp_tmp := x1_tmp_tmp + tHold;
+x4_tmp_tmp_0 := x4_tmp_tmp + fRampTime_s;
+x4_tmp := x4_tmp_tmp_0 + fHoldPositionTime_s;
+x1_tmp := x4_tmp + fRampTime_s;
+x4 := x1_tmp - x4_tmp;
+x4 := (fPositionSetpoint_ms - (x4 * fStartVelocity_m)) + (((slopeRetr / fRampTime_s) * (x4 * x4)) / 2.0);
+IF Error = 1 THEN 
+    fPositionReference_m := fStartPosition_m;
+    fVelocityReference_m := fStartVelocity_m;
+ELSIF (fClock_s >= 0.0) AND (fClock_s < fTimeBeforeStarting_s) THEN 
+    fPositionReference_m := fStartPosition_m;
+    fVelocityReference_m := fStartVelocity_m;
+ELSIF (fClock_s >= fTimeBeforeStarting_s) AND (fClock_s < x1_tmp_tmp) THEN 
+    slopeRetr := fClock_s - fTimeBeforeStarting_s;
+    fPositionReference_m := ((slopeRetr * fStartVelocity_m) + fStartPosition_m) - ((x1_tmp_0 * (slopeRetr * slopeRetr)) / 2.0);
+    fVelocityReference_m := fStartVelocity_m - (x1_tmp_0 * slopeRetr);
+ELSIF (fClock_s >= x1_tmp_tmp) AND (fClock_s < x4_tmp_tmp) THEN 
+    fPositionReference_m := ((fClock_s - x1_tmp_tmp) * fVelocitySetpoint_m) + x1;
+    fVelocityReference_m := fVelocitySetpoint_m;
+ELSIF (fClock_s >= x4_tmp_tmp) AND (fClock_s < x4_tmp_tmp_0) THEN 
+    slopeRetr := fClock_s - x4_tmp_tmp;
+    fPositionReference_m := ((((x4_tmp_tmp - x1_tmp_tmp) * fVelocitySetpoint_m) + x1) + (slopeRetr * fVelocitySetpoint_m)) + ((x1_tmp_0 * (slopeRetr * slopeRetr)) / 2.0);
+    fVelocityReference_m := (slopeRetr * (slopeExt / fRampTime_s)) + fVelocitySetpoint_m;
+ELSIF (fClock_s >= x4_tmp_tmp_0) AND (fClock_s < x4_tmp) THEN 
+    fPositionReference_m := fPositionSetpoint_ms;
+    fVelocityReference_m := fStartVelocity_m;
+ELSIF (fClock_s >= x4_tmp) AND (fClock_s < x1_tmp) THEN 
+    slopeExt := fClock_s - x4_tmp;
+    slopeRetr := slopeRetr / fRampTime_s;
+    fPositionReference_m := (fPositionSetpoint_ms - (slopeExt * fStartVelocity_m)) + ((slopeRetr * (slopeExt * slopeExt)) / 2.0);
+    fVelocityReference_m := (slopeExt * slopeRetr) + fStartVelocity_m;
+ELSE 
+    x1_tmp_0 := x1_tmp + tHold;
+    IF (fClock_s >= x1_tmp) AND (fClock_s < x1_tmp_0) THEN 
+        fPositionReference_m := x4 - ((fClock_s - x1_tmp) * fVelocitySetpoint_m);
+        fVelocityReference_m :=  -fVelocitySetpoint_m;
+    ELSIF (fClock_s >= x1_tmp_0) AND (fClock_s < (((((((fTimeBeforeStarting_s + fRampTime_s) + tHold) + fRampTime_s) + fHoldPositionTime_s) + fRampTime_s) + tHold) + fRampTime_s)) THEN 
+        slopeExt := fClock_s - x1_tmp_0;
+        slopeRetr := slopeRetr / fRampTime_s;
+        fPositionReference_m := ((x4 - ((x1_tmp_0 - x1_tmp) * fVelocitySetpoint_m)) - (slopeExt * fVelocitySetpoint_m)) - ((slopeRetr * (slopeExt * slopeExt)) / 2.0);
+        fVelocityReference_m := ( -fVelocitySetpoint_m) - (slopeExt * slopeRetr);
+    ELSE 
+        fPositionReference_m := fStartPosition_m;
+        fVelocityReference_m := fStartVelocity_m;
+    END_IF;
+END_IF;
+fTotalMotionTime_s := ((((((fTimeBeforeStarting_s + fRampTime_s) + tHold) + fRampTime_s) + fHoldPositionTime_s) + fRampTime_s) + tHold) + fRampTime_s;
+
+(* End of Outputs for SubSystem: '<Root>/FB_MotionReferenceGenerator' *)
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

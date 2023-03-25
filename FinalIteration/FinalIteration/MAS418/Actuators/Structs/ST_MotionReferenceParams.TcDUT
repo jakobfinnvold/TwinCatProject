@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_MotionReferenceParams" Id="{68df9fbe-635e-43e7-9775-f8adc7622695}">
+    <Declaration><![CDATA[TYPE ST_MotionReferenceParams :
+STRUCT
+	fStartPosition_m: LREAL := 0.0;
+	fStartVelocity_m: LREAL := 0.0;
+	fPositionSetpoint_m: LREAL := 0.2;
+	fVelocitySetpoint_m: LREAL := 0.02;
+	fTimeBeforeStarting_s: LREAL := 1.5;
+	fRampTime_s: LREAL := 2.0;
+	fHoldPositionTime_s: LREAL := 4.0;
+	
+	// Saturation
+	fMaxPosition 			: LREAL := 0.6;
+	fMinPosition 			: LREAL := 0.0;
+	fMaxVelocity 			: LREAL := 0.04;
+	
+	// Cycle time
+	fCycleTime : LREAL := 0.001; // Same as matlab/simulink
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

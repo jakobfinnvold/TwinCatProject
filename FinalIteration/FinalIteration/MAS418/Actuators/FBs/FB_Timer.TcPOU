@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Timer" Id="{5e9d1a3a-15af-4ea9-89ef-71fde47ab25e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Timer
+VAR_INPUT
+	bEnable 	: BOOL;
+	bStart 		: BOOL;
+	bStop 		: BOOL;
+	fCycleTime  : LREAL;
+END_VAR
+VAR_OUTPUT
+	fTime : LREAL;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bStart AND NOT(bStop) AND bEnable THEN
+	fTime := fTime + fCycleTime;
+ELSE
+	fTime := 0.0;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

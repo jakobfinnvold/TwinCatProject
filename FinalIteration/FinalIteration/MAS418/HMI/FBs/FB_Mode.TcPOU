@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Mode" Id="{3a6dc014-863a-4878-9e10-ca4ae35010a4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Mode
+VAR_INPUT
+	bMode : BOOL; 
+END_VAR
+VAR_OUTPUT
+	
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bMode THEN
+	G_Modes.eMode := E_Mode.Auto;
+ELSIF NOT bMode AND NOT G_Modes.bOn THEN
+	G_Modes.eMode := E_Mode.OFF;
+ELSE
+	G_Modes.eMode := E_Mode.Manual;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

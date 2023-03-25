@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_OpenLoopControlCyl" Id="{74a09497-960d-4f7a-8cfa-d5a45c40f2ba}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_OpenLoopControlCyl
+VAR_INPUT
+	bEnable: BOOL;
+	fVelocityReference_ms: LREAL;
+	stOpenLoopSettings : ST_OpenLoopParams;
+END_VAR
+VAR_OUTPUT
+	fVelocityFeedForward: LREAL;
+END_VAR
+VAR
+	fFlowReference : LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(* Outputs for Atomic SubSystem: '<Root>/FB_OpenLoopControl' *)
+(* Switch: '<S1>/Switch2' incorporates:
+ *  Constant: '<S1>/Annnulus_Area'
+ *  Constant: '<S1>/Bore_Area'
+ *  Product: '<S1>/Product1'
+ *  Product: '<S1>/Product3' *)
+
+IF fVelocityReference_ms >= 0.0 THEN 
+    fFlowReference := stOpenLoopSettings.fBoresideArea * fVelocityReference_ms; // Generates flow to bore side
+ELSE 
+    fFlowReference := fVelocityReference_ms * stOpenLoopSettings.fAnnulusArea; // Generates flow to piston side (Q=A*v)
+END_IF;
+
+(* End of Switch: '<S1>/Switch2' *)
+
+
+(* Switch: '<S1>/Switch1' incorporates:
+ *  Constant: '<S1>/Constant'
+ *  Gain: '<S1>/Gain1'
+ *  Product: '<S1>/Divide2' *)
+
+IF bEnable THEN 
+    fVelocityFeedForward := (60000.0 * fFlowReference) / stOpenLoopSettings.fMaxFlow;
+ELSE 
+    fVelocityFeedForward := 0.0;
+END_IF;
+
+(* End of Switch: '<S1>/Switch1' *)
+
+
+(* Saturate: '<S1>/Saturation1' *)
+
+IF fVelocityFeedForward > 1.0 THEN 
+    (* Outport: '<Root>/fVelocityFeedForward' *)
+    fVelocityFeedForward := 1.0;
+ELSIF fVelocityFeedForward < -1.0 THEN 
+    (* Outport: '<Root>/fVelocityFeedForward' *)
+    fVelocityFeedForward := -1.0;
+END_IF;
+
+(* End of Saturate: '<S1>/Saturation1' *)
+(* End of Outputs for SubSystem: '<Root>/FB_OpenLoopControl' *)
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

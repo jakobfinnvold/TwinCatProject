@@ -3,12 +3,12 @@
   <DUT Name="ST_WinchInputs" Id="{3f5bf0c0-8867-45cf-b1c3-92de94f0d28a}">
     <Declaration><![CDATA[TYPE ST_WinchInputs :
 STRUCT
-	fWinchInletPressure : REAL;
-	fWinchInletPressureSensor : REAL;
-	fWinchOutletPressure : REAL;
-	fWinchOutletPressureB1 : REAL;
-	fWinchDrainPressure : REAL; 
-	fWinchInletFlow : REAL; 
+	fWinchInletPressure : INT;
+	fWinchInletPressureSensor : INT;
+	fWinchOutletPressure : INT;
+	fWinchOutletPressureB1 : INT;
+	fWinchDrainPressure : INT; // 40 BAR
+	fWinchInletFlow : INT; 
 END_STRUCT
 END_TYPE
 ]]></Declaration>

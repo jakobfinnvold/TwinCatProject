@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Manual" Id="{fae25170-1957-4201-8931-640abb62b12f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Manual
+VAR_INPUT
+	bEnable : BOOL;
+	fInput : LREAL;
+
+END_VAR
+VAR_OUTPUT
+	fControlRefSignal	: LREAL;
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT(bEnable) THEN
+	fControlRefSignal := 0.0; 
+ELSE
+	fControlRefSignal := fInput;
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

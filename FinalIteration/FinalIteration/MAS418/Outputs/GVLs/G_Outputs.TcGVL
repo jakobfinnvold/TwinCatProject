@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G_Outputs" Id="{697b1904-804f-4190-938b-aa15fbde9d24}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	bGreenLight AT %Q* : BOOL;
+	bRedLight AT %Q* : BOOL;
+	
+	stWinchOutputs : ST_ValveOutput;
+	stCylinderOutputs : ST_ValveOutput; 
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

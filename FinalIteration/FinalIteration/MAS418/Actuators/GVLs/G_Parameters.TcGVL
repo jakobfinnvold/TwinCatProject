@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G_Parameters" Id="{13cc9f06-8ae3-49db-bfaf-71aa669e34dc}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	stCylParams : ST_CylinderParameters;
+	stValve : ST_ValveDeadband;
+	stWinchParams : ST_WinchParameters; 
+	stCommonScaling : ST_ScalingParameters; 
+	stControl : ST_SetControlParams;  
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

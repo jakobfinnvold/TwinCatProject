@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_OpenLoopParams" Id="{25c00052-12e6-4754-af2b-de58e038b0d6}">
+    <Declaration><![CDATA[TYPE ST_OpenLoopParams :
+STRUCT
+	fBoresideArea : LREAL;
+	fAnnulusArea : LREAL; 
+	fMaxFlow : LREAL; 
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

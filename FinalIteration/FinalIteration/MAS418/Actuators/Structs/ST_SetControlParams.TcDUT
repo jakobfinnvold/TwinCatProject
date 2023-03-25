@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_SetControlParams" Id="{4683c604-bd7c-4687-be99-6b82a6c385a9}">
+    <Declaration><![CDATA[TYPE ST_SetControlParams :
+STRUCT
+	stWinchControlClosedSettings : ST_ClosedLoopParams :=(fProportionalGain:=10, fIntegralGain:=5, fMaxAllowableError := 0.01);
+	stCylControlCloesSettings : ST_ClosedLoopParams :=(fProportionalGain:=10, fIntegralGain:=5, fMaxAllowableError := 0.01);
+	stWinchControlOpenSettings : ST_OpenLoopParams :=(fBoresideArea:=0.0033183, fAnnulusArea:=0.0023562, fMaxFlow:=150*0.5);
+	stCylControlOpenSettings : ST_OpenLoopParams :=(fBoresideArea:=0, fAnnulusArea:=0, fMaxFlow:=150*0.5); 
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

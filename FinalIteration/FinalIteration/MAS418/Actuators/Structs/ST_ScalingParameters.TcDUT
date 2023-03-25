@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ScalingParameters" Id="{688d45b7-c61f-44a6-8b78-08d561c877b5}">
+    <Declaration><![CDATA[TYPE ST_ScalingParameters :
+STRUCT
+	stCylPos : ST_InputScaling := (fMaxInputValue := 32295.0, fMinInputValue := 229.0, fMaxOutputValue := 0.5, fMinOutputValue := 0.0);
+	stPressure400bar 	: ST_InputScaling := (fMaxInputValue := 32767.0, fMinInputValue := 0.0, fMaxOutputValue := 400.0, fMinOutputValue := 0.0);
+	stPressure40bar 	: ST_InputScaling := (fMaxInputValue := 32767.0, fMinInputValue := 0.0, fMaxOutputValue := 40.0, fMinOutputValue := 0.0);
+	stFlow : ST_FlowScale := (fMaxFlowInput := 32295.0, fMinFlowInput := 0.0, fNeutralFlowInput := 15450, fNeutralDeadband := 50.0, fMaxFlowOutput := 150.0, fMinFlowOutput := -150.0, fNeutralFlowOutput := 0.0);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

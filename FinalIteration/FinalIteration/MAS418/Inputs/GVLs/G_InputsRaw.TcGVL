@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G_InputsRaw" Id="{e4e813e0-bc8b-420f-8933-2f578568374b}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	bSelectOff AT %I* : BOOL; 
+	bSelectManual	AT %I* : BOOL;
+	bSelectAuto AT %I* : BOOL;
+	bStartButton AT %I* : BOOL;
+	bStopButton	AT %I* : BOOL;
+	bJoyTopSwitch	AT %I* : BOOL;
+	
+	// Joystick
+	nJoyCyl AT %I* : INT; 					
+	nJoyWinch AT %I* : INT; 	
+
+	// Encoder					
+	nPositionCylPiston AT %I* : INT; 		
+	nEncoderValue AT %I* : UDINT;
+		
+	
+	// Pressures Valve x Cyl
+	nSupplyPressure AT %I* : INT;
+	nReturnPressure AT %I* : INT;
+	nPistonPressure AT %I* : INT;
+	nRodPressure AT %I* : INT; 
+	
+	// Pressures Winch
+	nWinch_A_Pressure AT %I* : INT;
+	nWinch_A1_Pressure AT %I* : INT;
+	nWinch_B_Pressure AT %I* : INT;
+	nWinch_B1_Pressure AT %I* : INT;
+	nWinchDrainPressure AT %I* : INT; 
+
+	// Winch flow
+	nWinchFlow AT %I* : INT; 		
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

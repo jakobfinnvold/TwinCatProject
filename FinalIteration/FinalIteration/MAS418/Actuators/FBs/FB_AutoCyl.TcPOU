@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_AutoCyl" Id="{76306901-03f1-47cb-a36b-1af08cd4ba86}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AutoCyl
+VAR_INPUT
+	bEnable 							: BOOL;
+	bStartMotion 						: BOOL;
+	bStopMotion 						: BOOL;
+	stMotionRefGenerator : ST_MotionReferenceParams;
+	stClosedLoopControl : ST_ClosedLoopParams;
+	stOpenLoopControl : ST_OpenLoopParams;
+	stControlSelect			: ST_AutoControllerSelection;
+	stScaledValues : ST_ScalingParameters;
+	stScaledWinch : ST_WinchParameters;  
+	fPositionFeedback					: LREAL;
+END_VAR
+VAR_OUTPUT
+	fTime : LREAL;
+	fVelocityReference_ms : LREAL;
+	fPositionReference_m : LREAL;
+	fControlOutputNormalized : LREAL;
+	fPositionError_mm : LREAL;
+END_VAR
+VAR
+	fbClock : FB_Timer;	
+	fbMotionReferenceGenerator 		: FB_MotionReferenceGenerator;	
+	fbFeedForwardControl 	: FB_OpenLoopControlCyl;
+	fbResetIntegralController 		: FB_ResetIntegralController; 
+	fbClosedLoopControl 	: FB_ClosedLoopControl;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbClock(
+	bEnable := bEnable,
+	bStart := bStartMotion,
+	bStop := bStopMotion,
+	fCycleTime := stMotionRefGenerator.fCycleTime);
+
+fbMotionReferenceGenerator(
+	bEnable := bEnable,
+	stMotionParameters := stMotionRefGenerator,
+	fClock_s := fbClock.fTime
+);
+
+fbFeedForwardControl(
+	bEnable := stControlSelect.bStartFeedForward,
+	fVelocityReference_ms := fbMotionReferenceGenerator.fVelocityReference_m,
+	stOpenLoopSettings := stOpenLoopControl); 
+	
+fbClosedLoopControl(
+	bEnable := stControlSelect.bStartClosedLoop,
+	bActivateIntegralController := stControlSelect.bEnableIntegral,
+	fPositionReference := fbMotionReferenceGenerator.fPositionReference_m,
+	fPositionFeedback := fPositionFeedback,
+	bIntegralControllReset := fbResetIntegralController.bReset,
+	stClosedLoopParams := stClosedLoopControl,
+	stMotionParams := stMotionRefGenerator
+	
+); 
+
+fbResetIntegralController(
+	fMaxPositionError_m := stClosedLoopControl.fMaxAllowableError,
+	fPositionError_m := fbClosedLoopControl.fPositionError,
+	fVelocityReference_ms := fbMotionReferenceGenerator.fVelocityReference_m
+	
+); 
+
+
+fVelocityReference_ms := fbMotionReferenceGenerator.fVelocityReference_m;
+fPositionReference_m := fbMotionReferenceGenerator.fPositionReference_m;
+fTime := fbClock.fTime;
+fPositionError_mm := fbClosedLoopControl.fPositionError*1E3; 
+
+IF bEnable THEN
+	fControlOutputNormalized := LIMIT(-1.0, (fbFeedForwardControl.fVelocityFeedForward + fbClosedLoopControl.fClosedLoopPosition), 1.0); 
+ELSE
+	fControlOutputNormalized := 0.0; 
+END_IF
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

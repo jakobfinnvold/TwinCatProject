@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Encoder" Id="{dd05d27e-ae82-4c53-8a2e-82a7d56ea416}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Encoder
+VAR_INPUT
+	nRawInput : UDINT;
+	stParam 		: ST_WinchParameters; 
+END_VAR
+VAR_OUTPUT
+	fPosition 		: LREAL;
+	fWirePosition : LREAL; 
+END_VAR
+VAR PERSISTENT
+	nRounds			: DINT;
+	nRawLast 		: DINT;
+END_VAR	
+VAR
+	nInput 		: DINT;
+	nTempInputDiff	: DINT;
+	nCount 			: DINT;
+	nMaxValue30bit 	: DINT :=  1073741823; // 2^30 - 1	
+	nThreshold30bit	: DINT := nMaxValue30bit/2;
+	fScale16bit		: LREAL := 360.0/65535.0; // 360deg/(2^16 - 1)
+	fTempPosition   : LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Convert to DINT (same as const values)
+nInput := UDINT_TO_DINT(nRawInput);
+
+// Define Encoder Rounds
+nTempInputDiff := nInput - nRawLast;
+IF (nTempInputDiff > nThreshold30bit) THEN
+	nRounds := nRounds - 1;
+END_IF
+
+IF (nTempInputDiff < -nThreshold30bit) THEN
+	nRounds := nRounds + 1;
+END_IF
+
+// Count Encoder Rounds
+nCount := nInput + nRounds*nMaxValue30bit;
+
+//Position Output
+fPosition := DINT_TO_LREAL(nCount)*fScale16bit - stParam.fEncoderOffset; // Encoder position
+fWirePosition := fPosition * G_Parameters.stWinchParams.fWinchDrumScaling; // WIre position]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

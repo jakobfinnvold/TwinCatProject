@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_VisuParam" Id="{9c902e48-b242-4282-9d8b-923e1793042f}">
+    <Declaration><![CDATA[TYPE ST_VisuParam :
+STRUCT
+bOn : BOOL;
+bAuto : BOOL;
+bStart : BOOL;
+bStop : BOOL;
+bRunning : BOOL;
+bFault : BOOL;
+fJoy_X : REAL;
+fJoy_Y : REAL;
+bTopSwitchJoy : BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

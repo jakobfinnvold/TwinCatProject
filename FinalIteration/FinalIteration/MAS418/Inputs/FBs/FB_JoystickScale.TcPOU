@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_JoystickScale" Id="{83fb9d44-3a94-420c-99db-bad80bd42be6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_JoystickScale
+VAR_INPUT
+	bEnable 				: BOOL;
+	nRawInput 				: INT;
+END_VAR
+VAR_OUTPUT
+	fNormalizedOutput 		: LREAL;
+END_VAR
+VAR
+	stJoystickScale  : ST_JoystickScale;
+	fRawInput 				: LREAL;
+	fTempInput 				: LREAL;
+	fTempOutput 			: LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fRawInput := INT_TO_LREAL(nRawInput);
+
+fTempInput := fRawInput - stJoystickScale.fNeutralInputValue;
+
+IF fTempInput > stJoystickScale.fNeutralDeadband THEN
+	fTempOutput := fTempInput/(stJoystickScale.fMaxInputValue - stJoystickScale.fNeutralInputValue);
+ELSIF fTempInput < -stJoystickScale.fNeutralDeadband THEN	
+	fTempOutput := fTempInput/(stJoystickScale.fNeutralInputValue - stJoystickScale.fMinInputValue);
+ELSE
+	fTempOutput := 0.0;
+END_IF
+
+IF NOT(bEnable) THEN
+	fNormalizedOutput := 0.0;
+ELSE
+	fNormalizedOutput := LIMIT(stJoystickScale.fMinOutputValue, fTempOutput, stJoystickScale.fMaxOutputValue);
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

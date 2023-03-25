@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G_Modes" Id="{f0ee6a16-b747-43a4-a6f2-cbb82fff1258}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	bManualMode : BOOL;
+	bAutoMode : BOOL; 
+	bStart : BOOL;
+	bStop : BOOL;
+	bSwitch : BOOL; 
+	bCylEnable : BOOL;
+	bWinchEnable : BOOL; 
+	bOn : BOOL; 
+	stMotionRefWinch : ST_MotionReferenceParams;
+	stMotionRefCyl : ST_MotionReferenceParams;
+	stCylinderControl : ST_AutoControllerSelection;
+	stWinchControl : ST_AutoControllerSelection; 
+	eStatus : E_Status;
+	eMode : E_Mode; 
+	stVisualParams : ST_VisuParam; 
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35" ClassName="CNestedPlcProjDef">
+	<Project GUID="{B9EB5FD8-C3E1-4572-93BF-C43FD72D0989}" Name="MAS418" PrjFilePath="..\..\MAS418\MAS418.plcproj" TmcFilePath="..\..\MAS418\MAS418.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+		<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{BBBA021E-B715-998D-0A66-9ABBAC47E01C}">
+			<Name>MAS418 Instance</Name>
+			<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+			<Vars VarGrpType="1">
+				<Name>PlcTask Inputs</Name>
+				<Var>
+					<Name>G_InputsRaw.bSelectOff</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.bSelectManual</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.bSelectAuto</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.bStartButton</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.bStopButton</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.bJoyTopSwitch</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nJoyCyl</Name>
+					<Comment><![CDATA[ Joystick]]></Comment>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nJoyWinch</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nPositionCylPiston</Name>
+					<Comment><![CDATA[ Encoder					]]></Comment>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nSupplyPressure</Name>
+					<Comment><![CDATA[ Pressures Valve x Cyl]]></Comment>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nEncoderValue</Name>
+					<Type>UDINT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nReturnPressure</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nPistonPressure</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nRodPressure</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nWinch_A_Pressure</Name>
+					<Comment><![CDATA[ Pressures Winch]]></Comment>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nWinch_A1_Pressure</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nWinch_B_Pressure</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nWinch_B1_Pressure</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nWinchDrainPressure</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_InputsRaw.nWinchFlow</Name>
+					<Comment><![CDATA[ Winch flow]]></Comment>
+					<Type>INT</Type>
+				</Var>
+			</Vars>
+			<Vars VarGrpType="2" AreaNo="1">
+				<Name>PlcTask Outputs</Name>
+				<Var>
+					<Name>G_Outputs.bGreenLight</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_Outputs.bRedLight</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_Outputs.stWinchOutputs.bEnable</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_Outputs.stWinchOutputs.nValveOutput</Name>
+					<Comment><![CDATA[ Initial value at offset]]></Comment>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>G_Outputs.stCylinderOutputs.bEnable</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>G_Outputs.stCylinderOutputs.nValveOutput</Name>
+					<Comment><![CDATA[ Initial value at offset]]></Comment>
+					<Type>INT</Type>
+				</Var>
+			</Vars>
+			<Contexts>
+				<Context>
+					<Id NeedCalleeCall="true">0</Id>
+					<Name>PlcTask</Name>
+					<ManualConfig>
+						<OTCID>#x02010030</OTCID>
+					</ManualConfig>
+					<Priority>20</Priority>
+					<CycleTime>10000000</CycleTime>
+				</Context>
+			</Contexts>
+			<TaskPouOids>
+				<TaskPouOid Prio="20" OTCID="#x08502001"/>
+			</TaskPouOids>
+		</Instance>
+	</Project>
+	<Mappings>
+		<OwnerA Name="MAS418 Instance">
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Box 10 (Fraba EtherCAT)">
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nEncoderValue" VarB="Encoder^Position Value"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 2 (EL1008)">
+				<Link VarA="PlcTask Inputs^G_InputsRaw.bJoyTopSwitch" VarB="Channel 5^Input" Size="1"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.bSelectAuto" VarB="Channel 2^Input" Size="1"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.bSelectManual" VarB="Channel 1^Input" Size="1"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.bStartButton" VarB="Channel 3^Input" Size="1"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.bStopButton" VarB="Channel 4^Input" Size="1"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL2008)">
+				<Link VarA="PlcTask Outputs^G_Outputs.bGreenLight" VarB="Channel 1^Output" Size="1"/>
+				<Link VarA="PlcTask Outputs^G_Outputs.bRedLight" VarB="Channel 2^Output" Size="1"/>
+				<Link VarA="PlcTask Outputs^G_Outputs.stCylinderOutputs.bEnable" VarB="Channel 4^Output" Size="1"/>
+				<Link VarA="PlcTask Outputs^G_Outputs.stWinchOutputs.bEnable" VarB="Channel 3^Output" Size="1"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL3068)">
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nPistonPressure" VarB="AI Standard Channel 4^Value"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nReturnPressure" VarB="AI Standard Channel 2^Value"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nRodPressure" VarB="AI Standard Channel 3^Value"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nSupplyPressure" VarB="AI Standard Channel 1^Value"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nWinch_A1_Pressure" VarB="AI Standard Channel 5^Value"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nWinch_A_Pressure" VarB="AI Standard Channel 7^Value"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nWinch_B1_Pressure" VarB="AI Standard Channel 6^Value"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nWinch_B_Pressure" VarB="AI Standard Channel 8^Value"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL3068)">
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nWinchDrainPressure" VarB="AI Standard Channel 1^Value"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 6 (EL3174)">
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nWinchFlow" VarB="AI Standard Channel 1^Value"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL3255)">
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nJoyCyl" VarB="AI Standard Channel 2^Value"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nJoyWinch" VarB="AI Standard Channel 3^Value"/>
+				<Link VarA="PlcTask Inputs^G_InputsRaw.nPositionCylPiston" VarB="AI Standard Channel 1^Value"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL4104)">
+				<Link VarA="PlcTask Outputs^G_Outputs.stCylinderOutputs.nValveOutput" VarB="AO Output Channel 2^Analog output"/>
+				<Link VarA="PlcTask Outputs^G_Outputs.stWinchOutputs.nValveOutput" VarB="AO Output Channel 1^Analog output"/>
+			</OwnerB>
+		</OwnerA>
+	</Mappings>
+</TcSmItem>

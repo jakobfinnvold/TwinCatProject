@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P_out" Id="{cda154b4-471d-45e4-b59f-b1bcd32f58c1}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_out
+VAR
+	fbWinchOutput 		: FB_ValveOutput;
+	fbCylOutput 		: FB_ValveOutput;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Settings to ensure output if either auto or manual is selected:
+G_Outputs.stWinchOutputs.bEnable := G_Modes.bAutoMode OR G_Modes.bManualMode; 
+G_Outputs.stCylinderOutputs.bEnable := G_Modes.bAutoMode OR G_Modes.bManualMode; 
+
+
+fbWinchOutput(bEnable := G_ControlParameters.bWinchEnable OR G_ControlParameters.fWinchTimer > 0.0,
+	bDeadBandCompOn := G_ControlParameters.bDeadBandCompOn,
+	stValveDeadBand := G_Parameters.stValve,
+	fNormalizedInput := G_ControlParameters.fWinch_ControlInput,
+	nOutput => G_Outputs.stWinchOutputs.nValveOutput); 
+	
+	
+fbCylOutput(bEnable := G_ControlParameters.bWinchEnable OR G_ControlParameters.fCylTimer > 0.0,
+	bDeadBandCompOn := G_ControlParameters.bDeadBandCompOn,
+	stValveDeadBand := G_Parameters.stValve,
+	fNormalizedInput := G_ControlParameters.fCylinder_ControlInput,
+	nOutput => G_Outputs.stCylinderOutputs.nValveOutput); 
+	
+	]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

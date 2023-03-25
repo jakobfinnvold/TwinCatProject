@@ -13,7 +13,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{9FCEC79C-199C-4CDF-97E9-021C3F6470BC}" Name="Tut2.3" PrjFilePath="Tut2.3\Tut2.3.plcproj" TmcFilePath="Tut2.3\Tut2.3.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Tut2.3\Tut2.3.tmc" TmcHash="{155F665F-E4E1-51C7-F0E4-3EBD27A2C3DF}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Tut2.3\Tut2.3.tmc" TmcHash="{9B0A28C7-2E52-01AB-2E61-324D692AB250}">
 					<Name>Tut2 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>

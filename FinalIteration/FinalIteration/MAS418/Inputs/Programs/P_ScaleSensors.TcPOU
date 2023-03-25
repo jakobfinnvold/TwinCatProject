@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P_ScaleSensors" Id="{bc228dec-d6a0-467c-9cc3-b01851867f5e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_ScaleSensors
+VAR
+	// Joystick
+	fbJoystickX : FB_JoystickScale;
+	fbJoystickY : FB_JoystickScale;
+	
+	// Positions
+	fbWinchPosition : FB_Encoder;
+	fbCylPosition : FB_Scaling;
+	
+	// Pressures
+	fbSupplyPressure : FB_Scaling;
+	fbReturnPressure : FB_Scaling;
+	fbPistonPressure : FB_Scaling;
+	fbRodPressure	: FB_Scaling;
+	fbWinch_A_Pressure : FB_Scaling;
+	fbWinch_A1_Pressure : FB_Scaling;
+	fbWinch_B_Pressure : FB_Scaling;
+	fbWinch_B1_Pressure : FB_Scaling;
+	fbWinchDrainPressure : FB_Scaling;
+	
+	// Flows
+	fbWinchFlow	: FB_FlowScaling;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Scaling Joystick
+fbJoystickX(bEnable := G_Modes.bManualMode, nRawInput := G_InputsRaw.nJoyCyl,
+	fNormalizedOutput => G_InputsScaled.fJoystickScaledX);
+
+fbJoystickY(bEnable := G_Modes.bManualMode, 
+	nRawInput := G_InputsRaw.nJoyWinch, 
+	fNormalizedOutput => G_InputsScaled.fJoystickScaledY);
+ 
+// Winch position & Cylinder position
+fbWinchPosition (
+	nRawInput := G_InputsRaw.nEncoderValue, 
+	fPosition => G_InputsScaled.fEncoderPosition,
+	fWirePosition => G_InputsScaled.fWirePosition);
+
+fbCylPosition(
+	nRawInput := G_InputsRaw.nPositionCylPiston,
+	stInputScaling := G_Parameters.stCommonScaling.stCylPos,
+	fScaledOutput => G_InputsScaled.fCylPosition);
+
+
+// Pressures
+
+fbSupplyPressure(
+	nRawInput := G_InputsRaw.nSupplyPressure,
+	stInputScaling := G_Parameters.stCommonScaling.stPressure400bar,
+	fScaledOutput => G_InputsScaled.fSupplyPressure);
+
+fbReturnPressure(
+	nRawInput := G_InputsRaw.nReturnPressure,
+	stInputScaling := G_Parameters.stCommonScaling.stPressure40bar,
+	fScaledOutput => G_InputsScaled.fReturnPressure);
+
+fbPistonPressure(
+	nRawInput := G_InputsRaw.nPistonPressure,
+	stInputScaling := G_Parameters.stCommonScaling.stPressure400bar,
+	fScaledOutput => G_InputsScaled.fPistonPressure);
+	
+fbRodPressure(
+	nRawInput := G_InputsRaw.nRodPressure,
+	stInputScaling := G_Parameters.stCommonScaling.stPressure400bar,
+	fScaledOutput => G_InputsScaled.fRodPressure);
+	
+fbWinch_A_Pressure(
+	nRawInput := G_InputsRaw.nWinch_A_Pressure,
+	stInputScaling := G_Parameters.stCommonScaling.stPressure400bar,
+	fScaledOutput => G_InputsScaled.fWinch_A_Pressure); 
+	
+fbWinch_A1_Pressure(
+	nRawInput := G_InputsRaw.nWinch_A1_Pressure,
+	stInputScaling := G_Parameters.stCommonScaling.stPressure400bar,
+	fScaledOutput => G_InputsScaled.fWinch_A1_Pressure);
+
+fbWinch_B_Pressure(
+	nRawInput := G_InputsRaw.nWinch_B_Pressure,
+	stInputScaling := G_Parameters.stCommonScaling.stPressure400bar,
+	fScaledOutput => G_InputsScaled.fWinch_B_Pressure);
+
+fbWinch_B1_Pressure(
+	nRawInput := G_InputsRaw.nWinch_B1_Pressure,
+	stInputScaling := G_Parameters.stCommonScaling.stPressure400bar,
+	fScaledOutput => G_InputsScaled.fWinch_B1_Pressure);
+	
+fbWinchDrainPressure(
+	nRawInput := G_InputsRaw.nWinchDrainPressure,
+	stInputScaling := G_Parameters.stCommonScaling.stPressure40bar,
+	fScaledOutput => G_InputsScaled.fWinchDrainPressure);
+
+fbWinchFlow(
+	nRawInput := G_InputsRaw.nWinchFlow,
+	stFlowParams := G_Parameters.stCommonScaling.stFlow,
+	fScaledFlow => G_InputsScaled.fWinchFlow);
+
+	]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

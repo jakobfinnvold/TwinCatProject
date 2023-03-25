@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_AutoControllerSelection" Id="{f79d8da2-f43e-49db-b849-dc405f05233d}">
+    <Declaration><![CDATA[TYPE ST_AutoControllerSelection :
+STRUCT
+	bStartFeedForward : BOOL;
+	bStartClosedLoop : BOOL;
+	bEnableIntegral : BOOL; 
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

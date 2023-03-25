@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Status" Id="{fda19a98-9174-4376-945d-cfe330fd16ee}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Status
+VAR_INPUT
+	bFault : BOOL;
+	bStart : BOOL;
+	bStop : BOOL;
+	bRunning : BOOL;
+	bAuto : BOOL;
+	bOn : BOOL;
+END_VAR
+VAR_OUTPUT
+	eStatus : E_Status := E_Status.NotReady;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+CASE eStatus OF 
+
+	E_Status.NotReady:
+		IF bOn THEN
+			eStatus := E_Status.Ready;
+		ELSE
+			G_Modes.stVisualParams.bFault := FALSE;
+			G_Modes.stVisualParams.bStop := FALSE;
+			eStatus := E_Status.NotReady;
+			
+			
+		END_IF
+		
+	E_Status.Ready:
+		IF bOn THEN
+			eStatus := E_Status.Ready;
+		ELSE
+			eStatus := E_Status.NotReady;
+		END_IF
+		
+		IF bStart THEN
+			eStatus := E_Status.Starting;
+		END_IF
+	
+	E_Status.Starting:
+			eStatus := E_Status.Running;
+		
+	E_Status.Running:
+		IF bAuto AND bStart AND bOn THEN
+			G_Modes.stVisualParams.bRunning := TRUE;
+			eStatus := E_Status.Running;
+			
+		ELSIF
+			bFault THEN
+			eStatus := E_Status.Fault;
+			
+		ELSIF
+			 NOT (bAuto) AND bOn THEN
+			G_Modes.stVisualParams.bRunning := TRUE;
+			eStatus := E_Status.Running;
+				IF bStop THEN
+				eStatus := E_Status.Stopping;
+				END_IF
+		
+		
+		ELSE
+			G_Modes.stVisualParams.bRunning := FALSE;
+			eStatus := E_Status.Ready;
+		END_IF
+		
+		
+		
+		
+	E_Status.Stopping:
+		G_Modes.stVisualParams.bRunning := FALSE;
+		bStop := TRUE;
+		//Set in a delay to show the stopping longer.
+		eStatus := E_Status.NotReady;
+	
+	E_Status.Fault:
+		//Til steget der vi dektekterer fault//eStatus := E_Status.Fault;
+		IF bOn THEN	
+			G_Modes.stVisualParams.bStop := TRUE; // LIGHT
+			G_Modes.stVisualParams.bRunning := FALSE;
+			eStatus := E_Status.Fault;
+		ELSE
+			eStatus := E_Status.NotReady;
+		END_IF
+END_CASE
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

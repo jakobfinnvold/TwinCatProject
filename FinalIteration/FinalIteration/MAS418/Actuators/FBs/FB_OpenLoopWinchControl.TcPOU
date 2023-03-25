@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_OpenLoopWinchControl" Id="{cc994ba4-8711-4954-b4da-b30903da5a35}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_OpenLoopWinchControl
+VAR_INPUT
+	bEnable		: BOOL;
+	fVelocityReference_ms: LREAL;
+	stOpenLoopSettings : ST_OpenLoopParams;
+END_VAR
+VAR_OUTPUT
+	fOutput: LREAL;
+END_VAR
+VAR
+	fFlowReference_LpM : LREAL;
+	fRads : LREAL;
+	stWinchParams : ST_WinchParameters; 
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fRads := (fVelocityReference_ms/G_Parameters.stWinchParams.fWinchDrumScaling)*3.14/180; // m/s to rad/s
+//fFlowReference_lmin := (fDisplacment_cc*(fRads/(2*3.14)*60))/1000;
+fFlowReference_LpM := (G_Parameters.stWinchParams.fWinchMotorDisplacement*1E-5*fRads/(2*3.14))*60000; // m^3/s to l/min
+
+IF bEnable THEN 
+    fOutput := (fFlowReference_LpM) / stOpenLoopSettings.fMaxFlow;
+ELSE 
+    fOutput := 0.0;
+END_IF;
+
+IF fOutput > 1.0 THEN 
+    fOutput := 1.0;
+ELSIF fOutput < -1.0 THEN 
+    fOutput := -1.0;
+END_IF;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

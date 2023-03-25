@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G_InputsScaled" Id="{b120b57f-e5ef-4e36-ae84-9e46f2b61fc5}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	// Joystick
+	fJoystickScaledX 		: LREAL;
+	fJoystickScaledY 		: LREAL;
+	
+	// Cylinder and winch position
+	fCylPosition : LREAL;	
+	fEncoderPosition : LREAL;
+	fWirePosition : LREAL;
+	
+	// Pressures Valve
+	fSupplyPressure			: LREAL;
+	fReturnPressure 			: LREAL;
+	
+	// Pressures Cylinder
+	fPistonPressure 	: LREAL;
+	fRodPressure		: LREAL;
+	
+	// Pressures Winch
+	fWinch_A_Pressure 		: LREAL;
+	fWinch_A1_Pressure 		: LREAL;
+	fWinch_B_Pressure	: LREAL;
+	fWinch_B1_Pressure	: LREAL;
+	fWinchDrainPressure			: LREAL;
+	
+	// Winch Flow
+	fWinchFlow 					: LREAL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

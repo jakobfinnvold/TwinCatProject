@@ -18,7 +18,7 @@ VAR_GLOBAL
 
 	// Cylinder, Winch and pressure inputs
 	fSupplyPressure AT %Q* : LREAL;
-	fReturnPressure AT %Q*: LREAL;  
+	fReturnPressure AT %Q*: LREAL;  // 40 BAR
 	
 	stWinchPressure : ST_WinchInputs;
 	//fWinchPressureIn AT %Q* : LREAL := ST_WinchInputs.fWinchInletPressure; // A

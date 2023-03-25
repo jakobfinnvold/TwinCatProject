@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ValveOutput" Id="{3fe9b53e-16e0-4b9d-bf49-5259c829ad33}">
+    <Declaration><![CDATA[TYPE ST_ValveOutput :
+STRUCT
+	bEnable					AT %Q* : BOOL := 0;
+	nValveOutput 			AT %Q* : INT := 19660; // Initial value at offset
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
